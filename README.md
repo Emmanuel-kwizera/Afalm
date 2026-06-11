@@ -10,6 +10,7 @@ An AI-powered smart agriculture platform designed to assist farmers, agronomists
 
 - [GitHub Repo Link](https://github.com/Emmanuel-kwizera/Afalm)
 - [Figma Design](https://www.figma.com/design/b2satlhwSIA8AKPkESd5tQ/Afalm?node-id=0-1&t=fMkEVXBjUiuHN157-1)
+- [Initial Demo Video](https://youtu.be/A4Ms3E2iEcY)
 
 ---
 
