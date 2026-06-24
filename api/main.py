@@ -41,12 +41,12 @@ def load_model_and_classes():
         # Prefer retrained model if it exists, otherwise use original
         if os.path.exists(RETRAINED_MODEL_PATH):
             model = tf.keras.models.load_model(RETRAINED_MODEL_PATH)
-            print(f"✅ Loaded RETRAINED model from {RETRAINED_MODEL_PATH}")
+            print(f" Loaded RETRAINED model from {RETRAINED_MODEL_PATH}")
         elif os.path.exists(MODEL_PATH):
             model = tf.keras.models.load_model(MODEL_PATH)
-            print(f"✅ Loaded ORIGINAL model from {MODEL_PATH}")
+            print(f" Loaded ORIGINAL model from {MODEL_PATH}")
         else:
-            print(f"❌ Model not found at {MODEL_PATH}. Please run training notebook first.")
+            print(f" Model not found at {MODEL_PATH}. Please run training notebook first.")
             model = None
     except Exception as e:
         print(f"Error loading model: {e}")
@@ -70,7 +70,7 @@ load_model_and_classes()
 
 # Initialize FastAPI app
 app = FastAPI(
-    title="Plant Disease Detection API",
+    title="Afalm predictions",
     description="MLOps Pipeline for Plant Disease Classification",
     version="1.0.0"
 )
@@ -366,11 +366,11 @@ async def retrain(background_tasks: BackgroundTasks):
         """Retrain the model and reload it"""
         success, result = retrain_model(MODEL_PATH, NEW_DATA_DIR)
         if success:
-            print("🔄 Reloading model after successful retraining...")
+            print(" Reloading model after successful retraining...")
             load_model_and_classes()
-            print("✅ Model reloaded successfully!")
+            print(" Model reloaded successfully!")
         else:
-            print(f"❌ Retraining failed: {result}")
+            print(f" Retraining failed: {result}")
     
     background_tasks.add_task(retrain_and_reload)
     return {"message": "Retraining process started in background"}
