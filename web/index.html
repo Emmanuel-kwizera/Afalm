@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AFALM - Plant Disease Detection Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="main-header">
+            <div class="logo-container">
+                <img src="Afalm Logo.png" alt="AFALM Logo" class="brand-logo">
+            </div>
+            <div class="header-content">
+                <h1>Automated Farm with Adaptive Land Management Mechanisms</h1>
+                <p class="subtitle">Smart tools to keep your soil healthy and protect your crops from disease.</p>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="nav-tabs">
+            <div class="nav-tab active" data-tab="prediction">Prediction</div>
+            <div class="nav-tab" data-tab="soil">Soil Analysis</div>
+            <div class="nav-tab" data-tab="retraining">Retraining</div>
+            <div class="nav-tab" data-tab="dashboard">Dashboard</div>
+        </nav>
+
+        <!-- Monitoring Dashboard (Always Visible) -->
+        <section class="monitoring">
+            <h2>System Monitoring</h2>
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <h3>System Uptime</h3>
+                    <p class="metric-value" id="uptime">--</p>
+                </div>
+                <div class="metric-card">
+                    <h3 id="requests-label">Total Predictions</h3>
+                    <p class="metric-value" id="total-requests">--</p>
+                </div>
+                <div class="metric-card">
+                    <h3>Avg Inference Time</h3>
+                    <p class="metric-value" id="avg-inference">--</p>
+                </div>
+                <div class="metric-card">
+                    <h3>CPU Usage</h3>
+                    <p class="metric-value" id="cpu-usage">--</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Prediction Tab -->
+        <div id="prediction" class="tab-content active">
+            <section class="prediction">
+                <h2>Disease Prediction</h2>
+                
+                <div class="upload-area" id="upload-area">
+                    <input type="file" id="file-input" accept="image/*" multiple hidden>
+                    <div class="upload-prompt">
+                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="17 8 12 3 7 8"></polyline>
+                            <line x1="12" y1="3" x2="12" y2="15"></line>
+                        </svg>
+                        <p>Click to upload or drag and drop</p>
+                        <p class="upload-hint">Upload leaf images (PNG, JPG)</p>
+                    </div>
+                </div>
+
+                <button id="predict-btn" class="btn btn-primary" disabled>Analyze Images</button>
+
+                <!-- Results -->
+                <div id="results" class="results hidden">
+                    <h3>Prediction Results</h3>
+                    <div id="results-container"></div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Soil Analysis Tab -->
+        <div id="soil" class="tab-content">
+            <section class="soil-analysis">
+                <h2>Soil Nutrient & Crop Prediction</h2>
+                <div class="card">
+                    <form id="soil-form" class="soil-form-grid">
+                        <div class="form-group"><label>Nitrogen (N)</label><input type="number" id="soil-n" required step="0.1" placeholder="e.g. 90"></div>
+                        <div class="form-group"><label>Phosphorous (P)</label><input type="number" id="soil-p" required step="0.1" placeholder="e.g. 42"></div>
+                        <div class="form-group"><label>Potassium (K)</label><input type="number" id="soil-k" required step="0.1" placeholder="e.g. 43"></div>
+                        <div class="form-group"><label>Temperature (°C)</label><input type="number" id="soil-temp" required step="0.1" placeholder="e.g. 20.8"></div>
+                        <div class="form-group"><label>Humidity (%)</label><input type="number" id="soil-hum" required step="0.1" placeholder="e.g. 82"></div>
+                        <div class="form-group"><label>Moisture</label><input type="number" id="soil-moist" required step="0.1" placeholder="e.g. 50"></div>
+                        <div class="form-group"><label>pH Level</label><input type="number" id="soil-ph" required step="0.1" placeholder="e.g. 6.5"></div>
+                        <div class="form-group"><label>Rainfall (mm)</label><input type="number" id="soil-rain" required step="0.1" placeholder="e.g. 202.9"></div>
+                        <div class="form-group">
+                            <label>Soil Type</label>
+                            <select id="soil-type" required class="form-select">
+                                <option value="Black">Black</option>
+                                <option value="Clayey">Clayey</option>
+                                <option value="Loamy" selected>Loamy</option>
+                                <option value="Red">Red</option>
+                                <option value="Sandy">Sandy</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Crop Type</label>
+                            <select id="crop-type" required class="form-select">
+                                <option value="Barley">Barley</option>
+                                <option value="Cotton">Cotton</option>
+                                <option value="Ground Nuts">Ground Nuts</option>
+                                <option value="Maize">Maize</option>
+                                <option value="Millets">Millets</option>
+                                <option value="Oil seeds">Oil seeds</option>
+                                <option value="Paddy">Paddy</option>
+                                <option value="Pulses">Pulses</option>
+                                <option value="Sugarcane">Sugarcane</option>
+                                <option value="Tobacco">Tobacco</option>
+                                <option value="Wheat" selected>Wheat</option>
+                            </select>
+                        </div>
+                    </form>
+                    <button type="submit" form="soil-form" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">Analyze Soil</button>
+                    <div id="soil-status" class="status-message hidden"></div>
+                </div>
+
+                <div id="soil-results" class="results hidden">
+                    <h3>Analysis Results</h3>
+                    <div class="soil-results-grid">
+                        <div class="metric-card">
+                            <h3>Crop Recommendation</h3>
+                            <p class="metric-value" id="res-crop" style="font-size: 1.8rem;">--</p>
+                        </div>
+                        <div class="metric-card">
+                            <h3>Soil Health Risk</h3>
+                            <p class="metric-value" id="res-risk" style="font-size: 1.6rem;">--</p>
+                        </div>
+                        <div class="metric-card">
+                            <h3>Fertilizer Prescription</h3>
+                            <p class="metric-value" id="res-fert" style="font-size: 1.6rem;">--</p>
+                        </div>
+                        <div class="metric-card">
+                            <h3>Target N-P-K</h3>
+                            <p class="metric-value" id="res-npk" style="font-size: 1.6rem;">--</p>
+                        </div>
+                        <div class="metric-card">
+                            <h3>Salinity Stress</h3>
+                            <p class="metric-value" id="res-salinity" style="font-size: 1.6rem;">--</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Retraining Tab -->
+        <div id="retraining" class="tab-content">
+            <section class="retraining">
+                <h2>Model Retraining Pipeline</h2>
+                
+                <div class="card">
+                    <h3>1. Upload New Labeled Data</h3>
+                    <form id="upload-data-form">
+                        <div class="form-group">
+                            <label for="retrain-label">Disease Label (Class Name)</label>
+                            <input type="text" id="retrain-label" placeholder="e.g., Tomato___healthy" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="retrain-file">Image File or ZIP Archive</label>
+                            <input type="file" id="retrain-file" accept="image/*,.zip" required>
+                            <p style="font-size: 0.85rem; color: #607d8b; margin-top: 0.5rem;">Upload a single image or a .zip file containing multiple images</p>
+                        </div>
+                        <button type="submit" class="btn btn-secondary">Upload Data</button>
+                    </form>
+                    <div id="upload-status" class="status-message hidden"></div>
+                </div>
+
+                <div class="card" style="margin-top: 2rem;">
+                    <h3>2. Trigger Retraining</h3>
+                    <p>Start the fine-tuning process using all uploaded new data.</p>
+                    <button id="retrain-btn" class="btn btn-primary">Start Retraining Job</button>
+                    <div id="retrain-status" class="status-message hidden"></div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Dashboard Tab -->
+        <div id="dashboard" class="tab-content">
+            <section class="dashboard">
+                <h2>Analytics Dashboard</h2>
+                <div class="dashboard-grid">
+                    <div class="chart-container">
+                        <h3>Training Data Distribution</h3>
+                        <canvas id="trainChart"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <h3>New Data Distribution</h3>
+                        <canvas id="newDataChart"></canvas>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
