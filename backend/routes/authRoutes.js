@@ -1,5 +1,6 @@
 const express = require('express');
-const { register, login, registerAdmin } = require('../controllers/authController');
+const { register, login, registerAdmin, getAllUsers, resetPassword } = require('../controllers/authController');
+const { protect, authorize } = require('../middleware/authMiddleware');
 
 const router = express.Router();
 
@@ -65,6 +66,8 @@ router.post('/register', register);
  *       401:
  *         description: Invalid credentials
  */
+router.post('/login', login);
+
 /**
  * @swagger
  * /api/auth/register-admin:
@@ -104,5 +107,53 @@ router.post('/register', register);
  *         description: Validation or bad request error
  */
 router.post('/register-admin', registerAdmin);
+
+/**
+ * @swagger
+ * /api/auth/users:
+ *   get:
+ *     summary: Get all registered users
+ *     tags: [Auth]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: A list of users
+ *       401:
+ *         description: Not authorized, token failed
+ *       403:
+ *         description: Not authorized, user is not admin
+ */
+router.get('/users', protect, authorize('admin'), getAllUsers);
+
+/**
+ * @swagger
+ * /api/auth/reset-password:
+ *   post:
+ *     summary: Reset password via email
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *               - newPassword
+ *             properties:
+ *               email:
+ *                 type: string
+ *               newPassword:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Password reset successfully
+ *       404:
+ *         description: User not found
+ *       400:
+ *         description: Validation error
+ */
+router.post('/reset-password', resetPassword);
 
 module.exports = router;
