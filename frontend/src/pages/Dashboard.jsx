@@ -70,14 +70,20 @@ export default function Dashboard() {
             ) : (
               stats.recentDisease.map(item => (
                 <div key={item._id} className="history-card" style={{ marginBottom: '1rem', padding: '1rem', display: 'flex', gap: '1rem', backgroundColor: '#fff', borderRadius: '12px', boxShadow: '0 2px 10px rgba(0,0,0,0.05)' }}>
-                  <img 
-                    src={item.imageUrl} 
-                    alt="Scanned leaf" 
-                    style={{ width: '80px', height: '80px', objectFit: 'cover', borderRadius: '8px' }} 
-                  />
+                  {item.imageUrl ? (
+                    <img 
+                      src={item.imageUrl} 
+                      alt="Scanned leaf" 
+                      style={{ width: '80px', height: '80px', objectFit: 'cover', borderRadius: '8px' }} 
+                    />
+                  ) : (
+                    <div style={{ width: '80px', height: '80px', backgroundColor: '#EBF4EE', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#356C51' }}>
+                      No Image
+                    </div>
+                  )}
                   <div className="history-details" style={{ flex: '1' }}>
-                    <h4 style={{ margin: '0 0 0.5rem 0' }}>{item.diseaseName}</h4>
-                    <p style={{ margin: '0 0 0.2rem 0', fontSize: '0.9rem', color: '#666' }}>Confidence: {item.confidence}</p>
+                    <h4 style={{ margin: '0 0 0.5rem 0' }}>{item.disease}</h4>
+                    <p style={{ margin: '0 0 0.2rem 0', fontSize: '0.9rem', color: '#666' }}>Confidence: {(item.confidence * 100).toFixed(2)}%</p>
                     <p style={{ margin: '0', fontSize: '0.8rem', color: '#999' }}>{new Date(item.createdAt).toLocaleDateString()}</p>
                   </div>
                 </div>

@@ -11,6 +11,9 @@ const predictionSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    imageUrl: {
+      type: String, // Public Google Drive URL
+    },
     disease: {
       type: String,
       required: true,

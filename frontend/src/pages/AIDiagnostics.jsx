@@ -65,13 +65,17 @@ export default function AIDiagnostics() {
         setResults(combinedResults);
 
         // Save each prediction to the Node backend history asynchronously
-        combinedResults.forEach((res) => {
-          savePredictionToHistory({
-            filename: res.filename,
-            disease: res.disease,
-            confidence: res.confidence,
-            inference_time_ms: res.inference_time_ms
-          }).catch(e => console.error("Failed to save history:", e));
+        combinedResults.forEach((res, idx) => {
+          const formData = new FormData();
+          formData.append('filename', res.filename);
+          formData.append('disease', res.disease);
+          formData.append('confidence', res.confidence);
+          formData.append('inference_time_ms', res.inference_time_ms);
+          
+          // Attach the corresponding image file
+          formData.append('image', filePreviews[idx].file);
+
+          savePredictionToHistory(formData).catch(e => console.error("Failed to save history:", e));
         });
 
       } else {

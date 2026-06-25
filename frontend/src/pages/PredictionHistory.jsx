@@ -40,8 +40,15 @@ export default function PredictionHistory() {
         ) : (
           <div className="history-list">
             {history.map((item) => (
-              <div key={item._id} className="history-card">
-                <div className="history-details">
+              <div key={item._id} className="history-card" style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                {item.imageUrl && (
+                  <img 
+                    src={item.imageUrl} 
+                    alt="Scanned Leaf" 
+                    style={{ width: '80px', height: '80px', objectFit: 'cover', borderRadius: '8px' }}
+                  />
+                )}
+                <div className="history-details" style={{ flex: 1 }}>
                   <h4>{item.disease}</h4>
                   <p><strong>File:</strong> {item.filename}</p>
                   <p><strong>Confidence:</strong> {(item.confidence * 100).toFixed(2)}%</p>

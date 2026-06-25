@@ -1,4 +1,5 @@
 const Prediction = require('../models/Prediction');
+const { uploadFileToDrive } = require('../utils/driveService');
 
 // @desc    Save new prediction
 // @route   POST /api/predictions
@@ -6,13 +7,25 @@ const Prediction = require('../models/Prediction');
 const savePrediction = async (req, res) => {
   try {
     const { filename, disease, confidence, inference_time_ms } = req.body;
+    let imageUrl = null;
+
+    if (req.file) {
+      // Upload to Google Drive
+      try {
+        imageUrl = await uploadFileToDrive(req.file.buffer, req.file.originalname, req.file.mimetype);
+      } catch (uploadError) {
+        console.error('Failed to upload to Google Drive:', uploadError);
+        // Continue saving prediction even if image upload fails
+      }
+    }
 
     const prediction = new Prediction({
       user: req.user._id,
-      filename,
+      filename: filename || req.file?.originalname || 'unknown',
       disease,
       confidence,
       inference_time_ms,
+      imageUrl,
     });
 
     const savedPrediction = await prediction.save();
