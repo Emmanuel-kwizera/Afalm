@@ -59,4 +59,21 @@ export const getPredictionHistory = async () => {
   return response.data;
 };
 
+// --- Soil Health API ---
+
+export const predictSoilMetrics = async (soilData) => {
+  const response = await pythonApi.post('/api/v1/predict/soil', soilData);
+  return response.data;
+};
+
+export const saveSoilPredictionToHistory = async (soilPredictionData) => {
+  const response = await api.post('/soil-predictions', soilPredictionData);
+  return response.data;
+};
+
+export const getSoilPredictionHistory = async () => {
+  const response = await api.get('/soil-predictions');
+  return response.data;
+};
+
 export default api;

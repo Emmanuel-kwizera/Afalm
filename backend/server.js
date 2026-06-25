@@ -49,6 +49,8 @@ app.use(cors());
 app.use('/api/auth', authRoutes);
 const predictionRoutes = require('./routes/predictionRoutes');
 app.use('/api/predictions', predictionRoutes);
+const soilPredictionRoutes = require('./routes/soilPredictionRoutes');
+app.use('/api/soil-predictions', soilPredictionRoutes);
 
 app.get('/', (req, res) => {
   res.send('AFALM Auth Backend API is running...');
