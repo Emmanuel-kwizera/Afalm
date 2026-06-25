@@ -47,6 +47,8 @@ app.use(cors());
 
 // Routes
 app.use('/api/auth', authRoutes);
+const predictionRoutes = require('./routes/predictionRoutes');
+app.use('/api/predictions', predictionRoutes);
 
 app.get('/', (req, res) => {
   res.send('AFALM Auth Backend API is running...');

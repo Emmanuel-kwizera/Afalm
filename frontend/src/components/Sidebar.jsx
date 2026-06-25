@@ -39,6 +39,9 @@ export default function Sidebar() {
         <NavLink to="/ai-diagnostics" className={({isActive}) => isActive ? "nav-item active" : "nav-item"}>
           AI Diagnostics
         </NavLink>
+        <NavLink to="/history" className={({isActive}) => isActive ? "nav-item active" : "nav-item"}>
+          History
+        </NavLink>
         <NavLink to="/alerts" className={({isActive}) => isActive ? "nav-item active" : "nav-item"}>
           Alerts
         </NavLink>

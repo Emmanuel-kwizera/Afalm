@@ -1,147 +1,164 @@
-import React, { useState } from 'react';
-
-// Reusable SVG Gauge Component
-const NutrientGauge = ({ label, value, unit, total, color, status, statusColor }) => {
-  const percentage = (value / total) * 100;
-  const radius = 50;
-  const circumference = 2 * Math.PI * radius;
-  const strokeDashoffset = circumference - (percentage / 100) * circumference;
-
-  return (
-    <div className="gauge-container">
-      <div className="gauge-label">{label}</div>
-      <div className="gauge-svg-wrapper">
-        <svg width="140" height="140" viewBox="0 0 120 120">
-          <circle 
-            cx="60" cy="60" r={radius} 
-            fill="none" stroke="#F0F4F2" strokeWidth="12" 
-          />
-          <circle 
-            cx="60" cy="60" r={radius} 
-            fill="none" stroke={color} strokeWidth="12"
-            strokeDasharray={circumference}
-            strokeDashoffset={strokeDashoffset}
-            strokeLinecap="round"
-            transform="rotate(-90 60 60)"
-          />
-        </svg>
-        <div className="gauge-center-text">
-          <span className="gauge-value">{value}</span>
-          <span className="gauge-unit">{unit}</span>
-        </div>
-      </div>
-      <div className="gauge-status-container">
-        <div className="gauge-status-label">Optimal Range</div>
-        <div className="gauge-status-value" style={{ color: statusColor }}>{status}</div>
-      </div>
-    </div>
-  );
-};
+import React, { useState, useRef } from 'react';
+import { predictDisease, savePredictionToHistory } from '../services/api';
 
 export default function AIDiagnostics() {
-  const [activeTab, setActiveTab] = useState('Prediction');
+  const [selectedFiles, setSelectedFiles] = useState([]);
+  const [isDragging, setIsDragging] = useState(false);
+  const [isPredicting, setIsPredicting] = useState(false);
+  const [results, setResults] = useState([]);
+  const [error, setError] = useState(null);
+  
+  const fileInputRef = useRef(null);
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e) => {
+    e.preventDefault();
+    setIsDragging(false);
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    setIsDragging(false);
+    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+      const files = Array.from(e.dataTransfer.files).filter(file => file.type.startsWith('image/'));
+      setSelectedFiles(files);
+      setResults([]);
+      setError(null);
+    }
+  };
+
+  const handleFileSelect = (e) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const files = Array.from(e.target.files);
+      setSelectedFiles(files);
+      setResults([]);
+      setError(null);
+    }
+  };
+
+  const handlePredict = async () => {
+    if (selectedFiles.length === 0) return;
+    
+    setIsPredicting(true);
+    setError(null);
+    setResults([]);
+
+    try {
+      // Create Object URLs for previews
+      const filePreviews = selectedFiles.map(file => ({
+        file,
+        preview: URL.createObjectURL(file)
+      }));
+
+      const response = await predictDisease(selectedFiles);
+      
+      if (response.success) {
+        // Map predictions back to the file previews
+        const combinedResults = response.predictions.map((pred, idx) => ({
+          ...pred,
+          preview: filePreviews[idx].preview
+        }));
+        setResults(combinedResults);
+
+        // Save each prediction to the Node backend history asynchronously
+        combinedResults.forEach((res) => {
+          savePredictionToHistory({
+            filename: res.filename,
+            disease: res.disease,
+            confidence: res.confidence,
+            inference_time_ms: res.inference_time_ms
+          }).catch(e => console.error("Failed to save history:", e));
+        });
+
+      } else {
+        setError('Prediction failed. Please try again.');
+      }
+    } catch (err) {
+      console.error(err);
+      setError('Network error or prediction service is offline.');
+    } finally {
+      setIsPredicting(false);
+    }
+  };
 
   return (
     <div className="diagnostics-page">
-      {/* Top Banner */}
       <div className="banner">
-        <h2>Plant Disease Detection System</h2>
-        <p>AI-Powered Crop Disease Identification | MLOps Pipeline</p>
+        <h2>AI Disease Diagnostics</h2>
+        <p>Upload leaf images for real-time disease detection</p>
       </div>
 
-      {/* Internal Tabs */}
-      <div className="internal-tabs">
-        <button 
-          className={`int-tab ${activeTab === 'Prediction' ? 'active' : ''}`}
-          onClick={() => setActiveTab('Prediction')}
+      <div className="upload-container">
+        <div 
+          className={`upload-box ${isDragging ? 'drag-over' : ''}`}
+          onDragOver={handleDragOver}
+          onDragLeave={handleDragLeave}
+          onDrop={handleDrop}
+          onClick={() => fileInputRef.current?.click()}
+          style={{ cursor: 'pointer', border: isDragging ? '2px dashed #356C51' : '2px dashed #D3E0D8' }}
         >
-          Prediction
-        </button>
+          <input 
+            type="file" 
+            ref={fileInputRef} 
+            onChange={handleFileSelect} 
+            accept="image/*" 
+            multiple 
+            hidden 
+          />
+          <div className="upload-circle"></div>
+          <div className="upload-text">
+            {selectedFiles.length > 0 
+              ? `${selectedFiles.length} file(s) selected` 
+              : 'Click to upload or drag and drop'}
+          </div>
+          <div className="upload-sub">Upload leaf images (PNG, JPG)</div>
+        </div>
+        
         <button 
-          className={`int-tab ${activeTab === 'Retraining' ? 'active' : ''}`}
-          onClick={() => setActiveTab('Retraining')}
+          className="btn-primary" 
+          onClick={handlePredict}
+          disabled={selectedFiles.length === 0 || isPredicting}
+          style={{ width: '200px', margin: '0 auto', display: 'block' }}
         >
-          Retraining
+          {isPredicting ? 'Analyzing...' : 'Analyze Images'}
         </button>
-        <button 
-          className={`int-tab ${activeTab === 'Dashboard' ? 'active' : ''}`}
-          onClick={() => setActiveTab('Dashboard')}
-        >
-          Dashboard
-        </button>
+
+        {error && <div className="error-msg" style={{ marginTop: '1rem', textAlign: 'center' }}>{error}</div>}
       </div>
 
-      {/* System Monitoring */}
-      <div className="section-header">
-        <h3>System Monitoring</h3>
-      </div>
-      <div className="monitoring-grid">
-        <div className="monitor-card">
-          <div className="monitor-label">ML MODEL UPTIME</div>
-          <div className="monitor-val text-green">99.9%</div>
-          <div className="monitor-sub">Operational</div>
-        </div>
-        <div className="monitor-card">
-          <div className="monitor-label">TOTAL SCANS TODAY</div>
-          <div className="monitor-val">142</div>
-        </div>
-        <div className="monitor-card">
-          <div className="monitor-label">AI CONFIDENCE AVG</div>
-          <div className="monitor-val text-green">94.5%</div>
-        </div>
-      </div>
-
-      {/* Main Content Grid */}
-      <div className="diagnostics-grid">
-        {/* Left Column: Disease Prediction */}
-        <div className="prediction-col">
-          <div className="section-header">
-            <h3>Disease Prediction</h3>
-          </div>
-          
-          <div className="upload-box">
-            <div className="upload-circle"></div>
-            <div className="upload-text">Click to upload or drag and drop</div>
-            <div className="upload-sub">Upload leaf images (PNG, JPG)</div>
-          </div>
-          
-          <button className="btn-analyze" disabled>Analyze Images</button>
-        </div>
-
-        {/* Right Column: Soil Nutrients */}
-        <div className="nutrients-col">
-          <div className="section-header space-between">
-            <h3>Soil Nutrients</h3>
-            <span className="details-link">DETAILS</span>
-          </div>
-
-          <div className="nutrient-cards">
-            <div className="nutrient-card">
-              <NutrientGauge 
-                label="NITROGEN (N)"
-                value={60}
-                unit="ppm"
-                total={100}
-                color="#1E4631"
-                status="BALANCED"
-                statusColor="#1E4631"
-              />
-            </div>
-            
-            <div className="nutrient-card">
-              <NutrientGauge 
-                label="PHOSPHORUS (P)"
-                value={12}
-                unit="ppm"
-                total={100}
-                color="#F2C94C"
-                status="MONITOR"
-                statusColor="#F2C94C"
-              />
-            </div>
+      {results.length > 0 && (
+        <div className="results-container">
+          <h3 style={{ margin: '2rem 0 1rem 0' }}>Prediction Results</h3>
+          <div className="results-grid">
+            {results.map((result, idx) => (
+              <div key={idx} className="result-card">
+                <img src={result.preview} alt="Leaf" className="result-img" />
+                <div className="result-info">
+                  <div className="result-disease" style={{ fontWeight: 'bold', fontSize: '1.1rem', marginBottom: '0.5rem' }}>
+                    {result.disease}
+                  </div>
+                  <div className="result-confidence" style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginBottom: '0.5rem' }}>
+                    Confidence: {(result.confidence * 100).toFixed(2)}%
+                  </div>
+                  <div className="confidence-bar" style={{ width: '100%', height: '8px', backgroundColor: '#EBF4EE', borderRadius: '4px', overflow: 'hidden', marginBottom: '0.5rem' }}>
+                    <div 
+                      className="confidence-fill" 
+                      style={{ width: `${result.confidence * 100}%`, height: '100%', backgroundColor: '#356C51' }}
+                    ></div>
+                  </div>
+                  <div className="result-time" style={{ fontSize: '0.8rem', color: '#A0B0A5' }}>
+                    Inference: {result.inference_time_ms}ms
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
