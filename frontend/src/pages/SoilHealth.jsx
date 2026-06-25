@@ -81,45 +81,74 @@ export default function SoilHealth() {
         <p>Analyze your soil metrics for personalized farming recommendations</p>
       </div>
 
-      <div className="auth-card" style={{ maxWidth: '800px', margin: '0 auto 3rem auto' }}>
-        <form id="soil-form" className="soil-form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }} onSubmit={handleAnalyze}>
-          <div className="form-group">
-            <label>Nitrogen (N)</label>
-            <input type="number" name="nitrogen" required step="0.1" placeholder="e.g. 90" className="form-control" value={formData.nitrogen} onChange={handleChange} />
-          </div>
-          <div className="form-group">
-            <label>Phosphorous (P)</label>
-            <input type="number" name="phosphorous" required step="0.1" placeholder="e.g. 42" className="form-control" value={formData.phosphorous} onChange={handleChange} />
-          </div>
-          <div className="form-group">
-            <label>Potassium (K)</label>
-            <input type="number" name="potassium" required step="0.1" placeholder="e.g. 43" className="form-control" value={formData.potassium} onChange={handleChange} />
-          </div>
-          <div className="form-group">
-            <label>Temperature (°C)</label>
-            <input type="number" name="temperature" required step="0.1" placeholder="e.g. 20.8" className="form-control" value={formData.temperature} onChange={handleChange} />
-          </div>
-          <div className="form-group">
-            <label>Humidity (%)</label>
-            <input type="number" name="humidity" required step="0.1" placeholder="e.g. 82" className="form-control" value={formData.humidity} onChange={handleChange} />
-          </div>
-          <div className="form-group">
-            <label>Moisture</label>
-            <input type="number" name="moisture" required step="0.1" placeholder="e.g. 50" className="form-control" value={formData.moisture} onChange={handleChange} />
-          </div>
-          <div className="form-group">
-            <label>pH Level</label>
-            <input type="number" name="ph" required step="0.1" placeholder="e.g. 6.5" className="form-control" value={formData.ph} onChange={handleChange} />
-          </div>
-          <div className="form-group">
-            <label>Rainfall (mm)</label>
-            <input type="number" name="rainfall" required step="0.1" placeholder="e.g. 202.9" className="form-control" value={formData.rainfall} onChange={handleChange} />
-          </div>
-          
-          <div className="form-group">
-            <label>Soil Type</label>
-            <div className="form-select-wrapper" style={{ padding: '0', margin: '0' }}>
-              <select name="soil_type" required value={formData.soil_type} onChange={handleChange} style={{ padding: '0.8rem', width: '100%', border: '1px solid var(--input-border)', borderRadius: '8px', backgroundColor: 'var(--input-bg)' }}>
+      <div className="light-soil-card">
+        <form id="soil-form" onSubmit={handleAnalyze}>
+          <div className="light-form-grid">
+            
+            {/* Row 1 */}
+            <div className="light-form-group">
+              <label className="light-label">Nitrogen (N)</label>
+              <div className="light-input-group">
+                <input type="range" name="nitrogen" className="light-slider" min="0" max="200" step="0.1" value={formData.nitrogen || 0} onChange={handleChange} />
+                <input type="number" name="nitrogen" className="light-number-input" required placeholder="0" value={formData.nitrogen} onChange={handleChange} />
+              </div>
+            </div>
+            <div className="light-form-group">
+              <label className="light-label">Phosphorous (P)</label>
+              <div className="light-input-group">
+                <input type="range" name="phosphorous" className="light-slider" min="0" max="100" step="0.1" value={formData.phosphorous || 0} onChange={handleChange} />
+                <input type="number" name="phosphorous" className="light-number-input" required placeholder="0" value={formData.phosphorous} onChange={handleChange} />
+              </div>
+            </div>
+            <div className="light-form-group">
+              <label className="light-label">Potassium (K)</label>
+              <div className="light-input-group">
+                <input type="range" name="potassium" className="light-slider" min="0" max="300" step="0.1" value={formData.potassium || 0} onChange={handleChange} />
+                <input type="number" name="potassium" className="light-number-input" required placeholder="0" value={formData.potassium} onChange={handleChange} />
+              </div>
+            </div>
+            <div className="light-form-group">
+              <label className="light-label">Temperature (°C)</label>
+              <div className="light-input-group">
+                <input type="range" name="temperature" className="light-slider" min="-10" max="50" step="0.1" value={formData.temperature || 0} onChange={handleChange} />
+                <input type="number" name="temperature" className="light-number-input" required placeholder="0.0" value={formData.temperature} onChange={handleChange} />
+              </div>
+            </div>
+
+            {/* Row 2 */}
+            <div className="light-form-group">
+              <label className="light-label">Humidity (%)</label>
+              <div className="light-input-group">
+                <input type="range" name="humidity" className="light-slider" min="0" max="100" step="0.1" value={formData.humidity || 0} onChange={handleChange} />
+                <input type="number" name="humidity" className="light-number-input" required placeholder="0" value={formData.humidity} onChange={handleChange} />
+              </div>
+            </div>
+            <div className="light-form-group">
+              <label className="light-label">Moisture</label>
+              <div className="light-input-group">
+                <input type="range" name="moisture" className="light-slider" min="0" max="100" step="0.1" value={formData.moisture || 0} onChange={handleChange} />
+                <input type="number" name="moisture" className="light-number-input" required placeholder="0" value={formData.moisture} onChange={handleChange} />
+              </div>
+            </div>
+            <div className="light-form-group">
+              <label className="light-label">pH Level</label>
+              <div className="light-input-group">
+                <input type="range" name="ph" className="light-slider" min="0" max="14" step="0.1" value={formData.ph || 0} onChange={handleChange} />
+                <input type="number" name="ph" className="light-number-input" required placeholder="0.0" value={formData.ph} onChange={handleChange} />
+              </div>
+            </div>
+            <div className="light-form-group">
+              <label className="light-label">Rainfall (mm)</label>
+              <div className="light-input-group">
+                <input type="range" name="rainfall" className="light-slider" min="0" max="500" step="0.1" value={formData.rainfall || 0} onChange={handleChange} />
+                <input type="number" name="rainfall" className="light-number-input" required placeholder="0.0" value={formData.rainfall} onChange={handleChange} />
+              </div>
+            </div>
+
+            {/* Row 3 */}
+            <div className="light-form-group">
+              <label className="light-label">Soil Type</label>
+              <select name="soil_type" className="light-select" required value={formData.soil_type} onChange={handleChange}>
                 <option value="Black">Black</option>
                 <option value="Clayey">Clayey</option>
                 <option value="Loamy">Loamy</option>
@@ -127,12 +156,9 @@ export default function SoilHealth() {
                 <option value="Sandy">Sandy</option>
               </select>
             </div>
-          </div>
-          
-          <div className="form-group">
-            <label>Crop Type</label>
-            <div className="form-select-wrapper" style={{ padding: '0', margin: '0' }}>
-              <select name="crop_type" required value={formData.crop_type} onChange={handleChange} style={{ padding: '0.8rem', width: '100%', border: '1px solid var(--input-border)', borderRadius: '8px', backgroundColor: 'var(--input-bg)' }}>
+            <div className="light-form-group">
+              <label className="light-label">Crop Type</label>
+              <select name="crop_type" className="light-select" required value={formData.crop_type} onChange={handleChange}>
                 <option value="Barley">Barley</option>
                 <option value="Cotton">Cotton</option>
                 <option value="Ground Nuts">Ground Nuts</option>
@@ -146,13 +172,15 @@ export default function SoilHealth() {
                 <option value="Wheat">Wheat</option>
               </select>
             </div>
+
           </div>
+          
+          <button type="submit" className="btn-green-full" disabled={isAnalyzing}>
+            {isAnalyzing ? 'Analyzing...' : 'Analyze Soil'}
+          </button>
         </form>
-        
-        <button type="submit" form="soil-form" className="btn-primary" style={{ marginTop: '2rem' }} disabled={isAnalyzing}>
-          {isAnalyzing ? 'Analyzing...' : 'Analyze Soil'}
-        </button>
-        {error && <div className="error-msg" style={{ marginTop: '1rem' }}>{error}</div>}
+
+        {error && <div className="error-msg" style={{ marginTop: '1rem', textAlign: 'center' }}>{error}</div>}
       </div>
 
       {results && (
