@@ -87,6 +87,27 @@ export default function AdminDashboard() {
         </div>
       </div>
 
+      <div className="section-header" style={{ marginTop: '2rem' }}>
+        <h3>Farmers by Registered Crop</h3>
+      </div>
+      <div className="monitoring-grid" style={{ marginBottom: '3rem', gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))' }}>
+        {(!stats.farmersPerCrop || stats.farmersPerCrop.length === 0) ? (
+          <p>No crop data available.</p>
+        ) : (
+          stats.farmersPerCrop.map(cropStat => (
+            <div key={cropStat._id} className="monitor-card" style={{ display: 'flex', alignItems: 'center', gap: '1rem', padding: '1rem' }}>
+              <div className="monitor-icon" style={{ backgroundColor: '#EBF4EE', padding: '0.8rem', borderRadius: '12px' }}>
+                <Sprout size={24} color="#356C51" />
+              </div>
+              <div>
+                <div className="monitor-label" style={{ marginBottom: '0.2rem' }}>{cropStat._id.toUpperCase()}</div>
+                <div className="monitor-val text-green" style={{ fontSize: '1.5rem' }}>{cropStat.count} {cropStat.count === 1 ? 'Farmer' : 'Farmers'}</div>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+
       <div className="diagnostics-grid" style={{ gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
         <div className="prediction-col">
           <div className="section-header space-between" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>

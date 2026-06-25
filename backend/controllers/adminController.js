@@ -23,6 +23,13 @@ const getSystemStats = async (req, res) => {
       .sort({ createdAt: -1 })
       .limit(5);
 
+    // Get farmers grouped by crop
+    const farmersPerCrop = await User.aggregate([
+      { $match: { mainCrop: { $exists: true, $ne: '' } } },
+      { $group: { _id: '$mainCrop', count: { $sum: 1 } } },
+      { $sort: { count: -1 } }
+    ]);
+
     res.status(200).json({
       success: true,
       data: {
@@ -32,7 +39,8 @@ const getSystemStats = async (req, res) => {
           soilScans: totalSoilScans
         },
         recentUsers,
-        recentDiseaseScans
+        recentDiseaseScans,
+        farmersPerCrop
       }
     });
   } catch (error) {
