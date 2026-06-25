@@ -1,91 +1,141 @@
 # AFALM: Agricultural Forecasting & Land Management
 
 [![GitHub Repo](https://img.shields.io/badge/GitHub-Repository-blue?logo=github)](https://github.com/Emmanuel-kwizera/Afalm.git)
-[![Python](https://img.shields.io/badge/Python-3.9%20%7C%203.10%20%7C%203.11-green?logo=python)](https://www.python.org/)
-[![TensorFlow](https://img.shields.io/badge/TensorFlow-2.x-orange?logo=tensorflow)](https://tensorflow.org)
-[![XGBoost](https://img.shields.io/badge/Models-XGBoost%20%7C%20LightGBM-ff69b4)](https://xgboost.readthedocs.io/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![React](https://img.shields.io/badge/Frontend-React.js-61DAFB?logo=react)](https://reactjs.org/)
+[![Node](https://img.shields.io/badge/Backend-Node.js%20%7C%20Express-339933?logo=node.js)](https://nodejs.org/)
+[![MongoDB](https://img.shields.io/badge/Database-MongoDB-47A248?logo=mongodb)](https://www.mongodb.com/)
+[![Python](https://img.shields.io/badge/ML%20API-Python%20%7C%20FastAPI-green?logo=python)](https://fastapi.tiangolo.com/)
 
-An AI-powered smart agriculture platform designed to assist farmers, agronomists, and autonomous drone agents in crop disease diagnostics and multi-task soil health prediction. **AFALM** integrates advanced Computer Vision (Deep Learning) with robust predictive modeling (tabular Machine Learning) to drive sustainable, high-yield agriculture.
+An AI-powered smart agriculture platform designed to assist farmers, agronomists, and autonomous drone agents in crop disease diagnostics and multi-task soil health prediction. **AFALM** integrates advanced Computer Vision (Deep Learning) with robust predictive modeling (tabular Machine Learning) within a modern, user-friendly full-stack web application to drive sustainable, high-yield agriculture.
 
-- [GitHub Repo Link](https://github.com/Emmanuel-kwizera/Afalm)
 - [Figma Design](https://www.figma.com/design/b2satlhwSIA8AKPkESd5tQ/Afalm?node-id=0-1&t=fMkEVXBjUiuHN157-1)
 - [Initial Demo Video](https://youtu.be/A4Ms3E2iEcY)
 
 ---
 
-##  Table of Contents
+## 📑 Table of Contents
 - [Description](#-description)
-- [How to Set Up the Project](#-how-to-set-up-the-project)
-  - [Prerequisites](#prerequisites)
-  - [Installation](#installation)
-  - [Running the Notebooks](#running-the-notebooks)
+- [System Architecture & Stack](#-system-architecture--stack)
+- [How to Set Up the Web Application](#-how-to-set-up-the-web-application)
+- [How to Set Up the Machine Learning Environment](#-how-to-set-up-the-machine-learning-environment)
 - [Machine Learning & Deep Learning Models](#-machine-learning--deep-learning-models)
-  - [1. Plant Disease Classification](#1-plant-disease-classification)
-  - [2. Soil Nutrient & Health Prediction](#2-soil-nutrient--health-prediction)
-- [Deployment Plan (Web App)](#-deployment-plan-web-app)
 
 ---
 
-## Description
+## 🌾 Description
 
 **AFALM** (Agricultural Forecasting & Land Management) is an end-to-end intelligence system for modern farms. It solves two critical challenges in agriculture:
-1. **Crop Health Monitoring**: Instant leaf-based disease diagnosis using a 44-class deep convolutional network.
+1. **Crop Health Monitoring**: Instant leaf-based disease diagnosis using a 44-class deep convolutional network. Users can upload images of their crops and instantly receive a health diagnostic report.
 2. **Soil Health & Land Management**: Tabular predictive modeling across 5 key soil tasks using multi-class classifiers and regression networks (predicting soil risk, crop suitability, fertilizer prescriptions, required NPK values, and salinity/moisture stress).
 
+The application features a fully authenticated user dashboard where farmers can review their diagnostic history, track soil health trends, manage their farm settings, and view automated platform-wide analytics via a dedicated Admin Dashboard.
+
 ---
 
-## How to Set Up the Project
+## 🏗 System Architecture & Stack
+
+The AFALM platform is built using a modern microservice-inspired architecture:
+
+- **Frontend (UI)**: Built with **React.js** and **Vite**. Provides a responsive, beautiful dashboard interface featuring real-time data visualization and secure JWT-based authentication flows.
+- **Main Backend (API Gateway)**: Built with **Node.js** and **Express**. Handles user authentication, database read/writes, route protection, and Google Drive API integrations for image storage.
+- **Machine Learning API (Inference)**: Built with **Python** and **FastAPI**. Exposes endpoints for executing TensorFlow image classification and XGBoost/LightGBM tabular predictions.
+- **Database**: **MongoDB**, serving as the persistent storage layer for user profiles, encrypted credentials, and historical scan records.
+
+---
+
+## 🚀 How to Set Up the Web Application
+
+To run the full AFALM application locally, you will need to start three separate servers (Database, Node.js Backend, and React Frontend).
+
+### 1. Prerequisites
+- **Node.js** (v16 or higher)
+- **MongoDB** (Running locally on port `27017` or via MongoDB Atlas)
+- **Python 3.9+** (For the ML backend)
+
+### 2. Backend Setup (Node.js)
+The Node backend handles user authentication and database operations.
+
+1. Navigate to the backend directory:
+   ```bash
+   cd backend
+   ```
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Create a `.env` file in the `backend` folder and add your environment variables:
+   ```env
+   PORT=5000
+   MONGO_URI=mongodb://localhost:27017/afalm
+   JWT_SECRET=your_super_secret_jwt_key
+   ```
+4. Start the backend development server:
+   ```bash
+   npm run dev
+   ```
+   *The Node.js server will start on `http://localhost:5000`.*
+
+### 3. Frontend Setup (React)
+The React frontend is the user-facing dashboard.
+
+1. Open a new terminal and navigate to the frontend directory:
+   ```bash
+   cd frontend
+   ```
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Start the Vite development server:
+   ```bash
+   npm run dev
+   ```
+   *The React app will be accessible at `http://localhost:5173`.*
+
+### 4. Admin Access Setup (Optional)
+To test the secure Admin Dashboard:
+1. Register a standard user account via the React frontend (`http://localhost:5173/register`).
+2. Open a terminal in the `backend` directory and run the upgrade script to grant yourself admin privileges:
+   ```bash
+   node -e "require('mongoose').connect('mongodb://localhost:27017/afalm').then(async () => { await require('./models/User').updateMany({}, {role: 'admin'}); console.log('Upgraded to admin!'); process.exit(0); })"
+   ```
+3. Log out and log back in to access the Admin Panel.
+
+---
+
+## 🧠 How to Set Up the Machine Learning Environment
+
+If you want to train the models from scratch, run the Jupyter notebooks, or boot up the Python FastAPI server for local predictions, follow these steps:
 
 ### Prerequisites
-- **Python**: 3.9, 3.10, or 3.11
 - **C/C++ Compiler & Build Tools** (needed for tree boosting packages)
 - **Homebrew** (macOS only, to resolve native dependencies)
-- **Kaggle API Credentials** (to download the raw soil dataset in the notebook)
-
-#### Note on macOS (Apple Silicon / Intel)
-XGBoost requires the OpenMP library to run multi-threaded calculations. If you encounter a `libomp.dylib` error, run:
-```bash
-brew install libomp
-```
-
----
+  *Note on macOS (Apple Silicon / Intel): XGBoost requires the OpenMP library to run multi-threaded calculations. If you encounter a `libomp.dylib` error, run `brew install libomp`.*
 
 ### Installation
-
-1. **Clone the repository**:
-   ```bash
-   git clone https://github.com/Emmanuel-kwizera/Afalm.git
-   cd Afalm
-   ```
-
-2. **Create and activate a virtual environment**:
+1. Navigate to the root repository folder.
+2. Create and activate a virtual environment:
    ```bash
    python3 -m venv venv
-   source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
    ```
-
-3. **Install the required packages**:
+3. Install the required Python packages:
    ```bash
    pip install --upgrade pip
-   pip install tensorflow numpy pandas matplotlib seaborn scikit-learn xgboost lightgbm joblib kagglehub
+   pip install tensorflow numpy pandas matplotlib seaborn scikit-learn xgboost lightgbm joblib kagglehub fastapi uvicorn
    ```
 
----
-
 ### Running the Notebooks
-
 Start your Jupyter notebook server:
 ```bash
 jupyter notebook
 ```
-
 - Run **`notebooks/plant_disease_training.ipynb`** to train the EfficientNetB0 image classification model.
 - Run **`notebooks/soil_nutrient_prediction.ipynb`** to execute the exploratory data analysis (EDA) and train the multi-task soil classifiers/regressors.
 
 ---
 
-## Machine Learning & Deep Learning Models
+## 🧬 Machine Learning & Deep Learning Models
 
 ### 1. Plant Disease Classification
 - **Base Architecture**: `EfficientNetB0` (Pre-trained on ImageNet).
@@ -101,44 +151,3 @@ Using the crop and soil dataset, the notebook trains pipelines (preprocessing sc
 - **Task 3a: Fertilizer Prescription**: Prescribing 7 classes of fertilizers based on current soil parameters.
 - **Task 3b: Nutrient Regression**: Predicting optimal target Nitrogen (N), Phosphorus (P), and Potassium (K) levels using regression algorithms.
 - **Task 4: Soil Salinity & Stress Index**: Binary classification predicting stress probability.
-
----
-
-## Deployment Plan (Web App)
-
-We deploy **AFALM** as a Dockerized web application composed of a FastAPI back-end API and frontend dashboard.
-
-```
-                  +-----------------------+
-                  |  Web Application UI   |    
-                  +-----------+-----------+
-                              | 
-                              v
-                  +-----------+-----------+
-                  |  FastAPI Gateway API  |
-                  +-----------+-----------+
-                              |
-               +--------------+--------------+
-               |                             |
-               v                             v
-  +------------+------------+   +------------+------------+
-  |  Image Diagnostic Unit  |   |  Soil Predictive Unit   |
-  |  (TensorFlow / Keras)   |   | (XGBoost / LightGBM)    |
-  +-------------------------+   +-------------------------+
-```
-
-### 1. Containerization (Docker)
-A multi-stage `Dockerfile` separates model weight storage and inference execution to keep container sizes small:
-- **FastAPI API Container**: Exposes endpoint `/api/v1/predict/disease` (accepting multipart image uploads) and `/api/v1/predict/soil` (accepting tabular sensor values).
-- **Frontend Nginx Container**: Serves static HTML dashboard files pointing to the FastAPI gateway.
-
-### 2. Pipeline Configuration
-- Heavy TensorFlow and XGBoost models are saved in the `models/` folder as `.keras` and `.pkl` files.
-- During container startup, these models are cached in RAM to guarantee low-latency API responses (typically under 100ms for soil tabular predictions, and under 250ms for image inference on standard CPU environments).
-
-### 3. Production Hosting Platforms
-- **API Service**: Deployed on **Render** (using Docker runtime) or **AWS ECS (Fargate)** for scalable CPU-based serverless containers.
-- **Database**: **Supabase (PostgreSQL)** for logging sensor time-series values, crop records, and diagnostic histories.
-- **Frontend Dashboard**: Deployed on **Vercel** or **GitHub Pages** as a fast static single-page application.
-
----
