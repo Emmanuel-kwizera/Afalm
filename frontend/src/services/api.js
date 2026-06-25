@@ -105,4 +105,13 @@ export const getDashboardStats = async () => {
   }
 };
 
+export const getAdminStats = async () => {
+  try {
+    const response = await api.get('/admin/stats');
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error.message;
+  }
+};
+
 export default api;

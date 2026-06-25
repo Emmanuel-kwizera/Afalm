@@ -1,0 +1,155 @@
+import React, { useEffect, useState } from 'react';
+import { Users, Microscope, Sprout, TrendingUp, ShieldAlert } from 'lucide-react';
+import { getAdminStats } from '../services/api';
+
+export default function AdminDashboard() {
+  const [stats, setStats] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const response = await getAdminStats();
+        if (response.success) {
+          setStats(response.data);
+        } else {
+          setError('Failed to fetch admin stats');
+        }
+      } catch (err) {
+        if (err.message?.includes('403')) {
+          setError('Access Denied: You must be an administrator to view this page.');
+        } else {
+          setError('Failed to connect to admin services.');
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchStats();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="dashboard-page" style={{ padding: '2rem' }}>
+        <div className="banner">
+          <h2>Admin Dashboard</h2>
+          <p>Loading system statistics...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="dashboard-page" style={{ padding: '2rem' }}>
+        <div className="banner" style={{ backgroundColor: '#fff', borderLeft: '4px solid #e74c3c' }}>
+          <h2 style={{ color: '#e74c3c', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <ShieldAlert size={24} />
+            Restricted Access
+          </h2>
+          <p>{error}</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="dashboard-page">
+      <div className="banner">
+        <h2>System Administration</h2>
+        <p>Global oversight of AFALM platform usage and metrics</p>
+      </div>
+
+      <div className="monitoring-grid">
+        <div className="monitor-card" style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+          <div className="monitor-icon"><Users size={32} color="#356C51" /></div>
+          <div>
+            <div className="monitor-label">REGISTERED USERS</div>
+            <div className="monitor-val text-green">{stats.totals.users}</div>
+          </div>
+        </div>
+
+        <div className="monitor-card" style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+          <div className="monitor-icon"><Microscope size={32} color="#356C51" /></div>
+          <div>
+            <div className="monitor-label">TOTAL DISEASE SCANS</div>
+            <div className="monitor-val text-green">{stats.totals.diseaseScans}</div>
+          </div>
+        </div>
+
+        <div className="monitor-card" style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+          <div className="monitor-icon"><Sprout size={32} color="#356C51" /></div>
+          <div>
+            <div className="monitor-label">TOTAL SOIL ANALYSES</div>
+            <div className="monitor-val text-green">{stats.totals.soilScans}</div>
+          </div>
+        </div>
+      </div>
+
+      <div className="diagnostics-grid" style={{ gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
+        <div className="prediction-col">
+          <div className="section-header space-between" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+            <h3>Recent Users Joined</h3>
+          </div>
+          <div className="history-list" style={{ marginTop: '1rem' }}>
+            {(!stats.recentUsers || stats.recentUsers.length === 0) ? (
+              <p>No recent users found.</p>
+            ) : (
+              stats.recentUsers.map(user => (
+                <div key={user._id} className="history-card" style={{ marginBottom: '1rem', padding: '1rem', display: 'flex', gap: '1rem', backgroundColor: '#fff', borderRadius: '12px', boxShadow: '0 2px 10px rgba(0,0,0,0.05)', alignItems: 'center' }}>
+                  <div style={{ width: '40px', height: '40px', borderRadius: '50%', backgroundColor: '#EBF4EE', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#356C51', fontWeight: 'bold' }}>
+                    {user.fullName.charAt(0).toUpperCase()}
+                  </div>
+                  <div className="history-details" style={{ flex: '1' }}>
+                    <h4 style={{ margin: '0 0 0.2rem 0' }}>{user.fullName}</h4>
+                    <p style={{ margin: '0 0 0.2rem 0', fontSize: '0.9rem', color: '#666' }}>{user.email}</p>
+                    <p style={{ margin: '0', fontSize: '0.8rem', color: '#999' }}>Role: {user.role?.toUpperCase() || 'UNKNOWN'}</p>
+                  </div>
+                  <div style={{ fontSize: '0.8rem', color: '#999' }}>
+                    {new Date(user.createdAt).toLocaleDateString()}
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        </div>
+
+        <div className="nutrients-col">
+          <div className="section-header space-between" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+            <h3>Platform Activity (Recent Scans)</h3>
+          </div>
+          <div className="history-list" style={{ marginTop: '1rem' }}>
+            {(!stats.recentDiseaseScans || stats.recentDiseaseScans.length === 0) ? (
+              <p>No recent scans found.</p>
+            ) : (
+              stats.recentDiseaseScans.map(item => (
+                <div key={item._id} className="history-card" style={{ marginBottom: '1rem', padding: '1rem', display: 'flex', gap: '1rem', backgroundColor: '#fff', borderRadius: '12px', boxShadow: '0 2px 10px rgba(0,0,0,0.05)', alignItems: 'center' }}>
+                  {item.imageUrl ? (
+                    <img 
+                      src={item.imageUrl} 
+                      alt="Scanned leaf" 
+                      style={{ width: '50px', height: '50px', objectFit: 'cover', borderRadius: '8px' }} 
+                    />
+                  ) : (
+                    <div style={{ width: '50px', height: '50px', backgroundColor: '#EBF4EE', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#356C51' }}>
+                      <Microscope size={20} />
+                    </div>
+                  )}
+                  <div className="history-details" style={{ flex: '1' }}>
+                    <h4 style={{ margin: '0 0 0.2rem 0' }}>{item.disease}</h4>
+                    <p style={{ margin: '0 0 0.2rem 0', fontSize: '0.85rem', color: '#666' }}>By: {item.user?.fullName || 'Unknown'}</p>
+                    <p style={{ margin: '0', fontSize: '0.8rem', color: '#999' }}>Confidence: {(item.confidence * 100).toFixed(2)}%</p>
+                  </div>
+                  <div style={{ fontSize: '0.8rem', color: '#999' }}>
+                    {new Date(item.createdAt).toLocaleDateString()}
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

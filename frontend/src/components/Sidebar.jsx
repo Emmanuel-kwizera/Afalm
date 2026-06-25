@@ -51,6 +51,11 @@ export default function Sidebar() {
         <NavLink to="/settings" className={({isActive}) => isActive ? "nav-item active" : "nav-item"}>
           Settings
         </NavLink>
+        {user.role === 'admin' && (
+          <NavLink to="/admin-dashboard" className={({isActive}) => isActive ? "nav-item active" : "nav-item"} style={{ marginTop: '1rem', borderTop: '1px solid #D3E0D8', paddingTop: '1rem' }}>
+            Admin Panel
+          </NavLink>
+        )}
       </nav>
 
       <div className="sidebar-footer">

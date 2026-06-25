@@ -10,7 +10,7 @@ export default function Login() {
 
   React.useEffect(() => {
     if (localStorage.getItem('token')) {
-      navigate('/ai-diagnostics');
+      navigate('/dashboard');
     }
   }, [navigate]);
 
@@ -35,7 +35,7 @@ export default function Login() {
       if (response.success) {
         localStorage.setItem('token', response.token);
         localStorage.setItem('user', JSON.stringify(response.user));
-        navigate('/ai-diagnostics');
+        navigate('/dashboard');
       }
     } catch (err) {
       setError(err.response?.data?.message || 'Invalid credentials.');
