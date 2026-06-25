@@ -196,16 +196,6 @@ export default function SoilHealth() {
               <div className="monitor-val" style={{ fontSize: '1.5rem', color: results.soil_risk === 'High Risk' ? '#F26C4F' : 'inherit' }}>{results.soil_risk || '--'}</div>
             </div>
             <div className="monitor-card">
-              <div className="monitor-label">Fertilizer Prescription</div>
-              <div className="monitor-val text-green" style={{ fontSize: '1.5rem' }}>{results.fertilizer_prescription || '--'}</div>
-            </div>
-            <div className="monitor-card">
-              <div className="monitor-label">Target N-P-K</div>
-              <div className="monitor-val" style={{ fontSize: '1.5rem' }}>
-                {results.target_n ? `${results.target_n}:${results.target_p}:${results.target_k}` : '--'}
-              </div>
-            </div>
-            <div className="monitor-card">
               <div className="monitor-label">Salinity Stress</div>
               <div className="monitor-val" style={{ fontSize: '1.5rem' }}>{results.salinity_stress || '--'}</div>
             </div>
@@ -237,8 +227,6 @@ export default function SoilHealth() {
                     <div>
                       <p><strong>Analysis:</strong></p>
                       <p>Risk: {item.soil_risk}</p>
-                      <p>Fertilizer: {item.fertilizer_prescription}</p>
-                      <p>Target NPK: {item.target_n}:{item.target_p}:{item.target_k}</p>
                       <p>Salinity: {item.salinity_stress}</p>
                     </div>
                     <div>

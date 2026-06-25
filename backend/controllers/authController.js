@@ -230,3 +230,55 @@ exports.resetPassword = async (req, res) => {
     res.status(500).json({ success: false, message: 'Server Error' });
   }
 };
+
+// @desc    Get current logged in user profile
+// @route   GET /api/auth/me
+// @access  Private
+exports.getUserProfile = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select('-password');
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
+    res.status(200).json({ success: true, data: user });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: 'Server Error' });
+  }
+};
+
+// @desc    Update user profile
+// @route   PUT /api/auth/me
+// @access  Private
+exports.updateUserProfile = async (req, res) => {
+  try {
+    const { fullName, phoneNumber, mainCrop } = req.body;
+
+    const user = await User.findById(req.user.id);
+
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
+
+    user.fullName = fullName || user.fullName;
+    user.phoneNumber = phoneNumber || user.phoneNumber;
+    user.mainCrop = mainCrop || user.mainCrop;
+
+    const updatedUser = await user.save();
+
+    res.status(200).json({
+      success: true,
+      data: {
+        id: updatedUser._id,
+        fullName: updatedUser.fullName,
+        email: updatedUser.email,
+        phoneNumber: updatedUser.phoneNumber,
+        mainCrop: updatedUser.mainCrop,
+        role: updatedUser.role
+      }
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: 'Server Error' });
+  }
+};

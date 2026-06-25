@@ -76,4 +76,33 @@ export const getSoilPredictionHistory = async () => {
   return response.data;
 };
 
+// --- User Profile APIs ---
+export const getUserProfile = async () => {
+  try {
+    const response = await api.get('/auth/me');
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error.message;
+  }
+};
+
+export const updateUserProfile = async (userData) => {
+  try {
+    const response = await api.put('/auth/me', userData);
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error.message;
+  }
+};
+
+// --- Dashboard APIs ---
+export const getDashboardStats = async () => {
+  try {
+    const response = await api.get('/dashboard/stats');
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error.message;
+  }
+};
+
 export default api;

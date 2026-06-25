@@ -3,6 +3,9 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const authRoutes = require('./routes/authRoutes');
+const predictionRoutes = require('./routes/predictionRoutes');
+const soilPredictionRoutes = require('./routes/soilPredictionRoutes');
+const dashboardRoutes = require('./routes/dashboardRoutes');
 const swaggerUI = require('swagger-ui-express');
 const swaggerJsDoc = require('swagger-jsdoc');
 
@@ -47,10 +50,9 @@ app.use(cors());
 
 // Routes
 app.use('/api/auth', authRoutes);
-const predictionRoutes = require('./routes/predictionRoutes');
 app.use('/api/predictions', predictionRoutes);
-const soilPredictionRoutes = require('./routes/soilPredictionRoutes');
 app.use('/api/soil-predictions', soilPredictionRoutes);
+app.use('/api/dashboard', dashboardRoutes);
 
 app.get('/', (req, res) => {
   res.send('AFALM Auth Backend API is running...');

@@ -156,4 +156,40 @@ router.get('/users', protect, authorize('admin'), getAllUsers);
  */
 router.post('/reset-password', resetPassword);
 
+/**
+ * @swagger
+ * /api/auth/me:
+ *   get:
+ *     summary: Get current logged in user
+ *     tags: [Auth]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: User profile
+ *   put:
+ *     summary: Update user profile
+ *     tags: [Auth]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               fullName:
+ *                 type: string
+ *               phoneNumber:
+ *                 type: string
+ *               mainCrop:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Updated user profile
+ */
+router.get('/me', protect, require('../controllers/authController').getUserProfile);
+router.put('/me', protect, require('../controllers/authController').updateUserProfile);
+
 module.exports = router;
