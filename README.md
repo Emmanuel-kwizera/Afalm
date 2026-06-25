@@ -13,16 +13,16 @@ An AI-powered smart agriculture platform designed to assist farmers, agronomists
 
 ---
 
-## 📑 Table of Contents
-- [Description](#-description)
-- [System Architecture & Stack](#-system-architecture--stack)
-- [How to Set Up the Web Application](#-how-to-set-up-the-web-application)
-- [How to Set Up the Machine Learning Environment](#-how-to-set-up-the-machine-learning-environment)
-- [Machine Learning & Deep Learning Models](#-machine-learning--deep-learning-models)
+## Table of Contents
+- [Description](#description)
+- [System Architecture & Stack](#system-architecture--stack)
+- [How to Set Up the Web Application](#how-to-set-up-the-web-application)
+- [How to Set Up the Machine Learning Environment](#how-to-set-up-the-machine-learning-environment)
+- [Machine Learning & Deep Learning Models](#machine-learning--deep-learning-models)
 
 ---
 
-## 🌾 Description
+## Description
 
 **AFALM** (Agricultural Forecasting & Land Management) is an end-to-end intelligence system for modern farms. It solves two critical challenges in agriculture:
 1. **Crop Health Monitoring**: Instant leaf-based disease diagnosis using a 44-class deep convolutional network. Users can upload images of their crops and instantly receive a health diagnostic report.
@@ -32,7 +32,7 @@ The application features a fully authenticated user dashboard where farmers can 
 
 ---
 
-## 🏗 System Architecture & Stack
+## System Architecture & Stack
 
 The AFALM platform is built using a modern microservice-inspired architecture:
 
@@ -43,7 +43,7 @@ The AFALM platform is built using a modern microservice-inspired architecture:
 
 ---
 
-## 🚀 How to Set Up the Web Application
+## How to Set Up the Web Application
 
 To run the full AFALM application locally, you will need to start three separate servers (Database, Node.js Backend, and React Frontend).
 
@@ -103,7 +103,7 @@ To test the secure Admin Dashboard:
 
 ---
 
-## 🧠 How to Set Up the Machine Learning Environment
+## How to Set Up the Machine Learning Environment
 
 If you want to train the models from scratch, run the Jupyter notebooks, or boot up the Python FastAPI server for local predictions, follow these steps:
 
@@ -135,7 +135,7 @@ jupyter notebook
 
 ---
 
-## 🧬 Machine Learning & Deep Learning Models
+## Machine Learning & Deep Learning Models
 
 ### 1. Plant Disease Classification
 - **Base Architecture**: `EfficientNetB0` (Pre-trained on ImageNet).
