@@ -30,6 +30,17 @@ const uploadFileToDrive = async (fileBuffer, fileName, mimeType) => {
     return null; // Graceful degradation if credentials are not provided yet
   }
 
+  // Check if it's the dummy credential file
+  try {
+    const creds = JSON.parse(fs.readFileSync(KEYFILEPATH, 'utf8'));
+    if (creds.private_key && creds.private_key.includes("YOUR_PRIVATE_KEY_HERE")) {
+      console.warn("Dummy credentials.json detected. Skipping Google Drive upload.");
+      return null;
+    }
+  } catch (e) {
+    // Ignore parse errors here, let the googleauth handle it
+  }
+
   try {
     const bufferStream = new stream.PassThrough();
     bufferStream.end(fileBuffer);
