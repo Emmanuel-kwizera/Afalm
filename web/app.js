@@ -2,7 +2,7 @@
 // Dynamically determine API URL based on where the frontend is served
 const API_BASE_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:' || !window.location.hostname)
     ? 'http://localhost:8000'
-    : window.location.origin;
+    : 'https://afalm.onrender.com';
 
 // DOM Elements
 const fileInput = document.getElementById('file-input');
