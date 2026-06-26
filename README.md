@@ -17,8 +17,8 @@ An AI-powered smart agriculture platform designed to assist farmers, agronomists
 
 - **Main Application (React Full-Stack):** [https://afalm-app.onrender.com](https://afalm-app.onrender.com)
 - **Alternative Static HTML Version:** [https://afalm-1.onrender.com](https://afalm-1.onrender.com)
-- **Machine Learning API:** [https://afalm.onrender.com](https://afalm.onrender.com)
-- **Node.js API:** [https://afalm-backend.onrender.com](https://afalm-backend.onrender.com)
+- **Machine Learning API:** [https://afalm.onrender.com](https://afalm.onrender.com/docs)
+- **Node.js API:** [https://afalm-backend.onrender.com](https://afalm-backend.onrender.com/api-docs)
 
 ---
 
