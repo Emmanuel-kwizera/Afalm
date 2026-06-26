@@ -108,7 +108,7 @@ def preprocess_image(image: Image.Image, target_size=(224, 224)):
     
     return img_array
 
-@app.get("/")
+@app.api_route("/", methods=["GET", "HEAD"])
 async def root():
     """Root endpoint"""
     return {
