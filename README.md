@@ -52,6 +52,28 @@ The AFALM platform is built using a modern microservice-inspired architecture:
 
 ---
 
+## Project Structure & Related Files
+
+```text
+Afalm/
+├── api/                    # Python FastAPI Machine Learning backend
+│   ├── main.py             # Main API routing and inference logic
+│   ├── models/             # Saved keras and XGBoost model weights
+│   └── requirements.txt    # Python dependencies
+├── backend/                # Node.js & Express API Gateway
+│   ├── models/             # MongoDB Mongoose schemas (User, Scan)
+│   ├── routes/             # Authentication and data routes
+│   └── server.js           # Express server entry point
+├── frontend/               # React.js & Vite Frontend Web App
+│   ├── src/components/     # Reusable UI components (Sidebar, Charts)
+│   ├── src/pages/          # Main dashboard views (Auth, Diagnostics, Soil)
+│   └── src/services/       # Axios API integration logic
+├── notebooks/              # Jupyter Notebooks for model training & EDA
+└── web/                    # Alternative vanilla HTML/JS static frontend
+```
+
+---
+
 ## How to Set Up the Web Application
 
 To run the full AFALM application locally, you will need to start three separate servers (Database, Node.js Backend, and React Frontend).
