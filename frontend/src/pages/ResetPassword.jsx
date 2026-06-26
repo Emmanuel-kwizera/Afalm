@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Mail, Lock, ShieldCheck, History, ArrowRight } from 'lucide-react';
 import { resetPassword } from '../services/api';
-import cornfieldHero from '../assets/cornfield_hero.png';
+import cornfieldHero from '../assets/cornfield_bg.png';
 import afalmLogo from '../assets/Afalm_Logo.png';
 
 export default function ResetPassword() {
@@ -56,7 +56,7 @@ export default function ResetPassword() {
         <p className="auth-subtitle">
           Regain access to your professional agricultural dashboard and continue your precise diagnostic journey.
         </p>
-        
+
         <div className="features-grid">
           <div className="feature-badge">
             <ShieldCheck size={18} color="#0B311E" />
@@ -85,14 +85,14 @@ export default function ResetPassword() {
               <label>Email Address</label>
               <div className="input-wrapper">
                 <Mail size={18} className="input-icon" />
-                <input 
-                  type="email" 
+                <input
+                  type="email"
                   name="email"
-                  className="form-control" 
-                  placeholder="email@farm-example.com" 
+                  className="form-control"
+                  placeholder="email@farm-example.com"
                   value={formData.email}
                   onChange={handleChange}
-                  required 
+                  required
                 />
               </div>
             </div>
@@ -101,14 +101,14 @@ export default function ResetPassword() {
               <label>New Password</label>
               <div className="input-wrapper">
                 <Lock size={18} className="input-icon" />
-                <input 
-                  type="password" 
+                <input
+                  type="password"
                   name="newPassword"
-                  className="form-control" 
-                  placeholder="********" 
+                  className="form-control"
+                  placeholder="********"
                   value={formData.newPassword}
                   onChange={handleChange}
-                  required 
+                  required
                 />
               </div>
             </div>
@@ -124,8 +124,8 @@ export default function ResetPassword() {
           </div>
 
           <div className="auth-footer">
-            <a href="#" style={{color: 'inherit', textDecoration: 'none'}}>Terms of Service</a>
-            <a href="#" style={{color: 'inherit', textDecoration: 'none'}}>Privacy Policy</a>
+            <a href="#" style={{ color: 'inherit', textDecoration: 'none' }}>Terms of Service</a>
+            <a href="#" style={{ color: 'inherit', textDecoration: 'none' }}>Privacy Policy</a>
           </div>
         </div>
       </div>

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { User, Mail, Lock, Phone, Sprout, Microscope, History, ArrowRight } from 'lucide-react';
 import { registerUser } from '../services/api';
-import cornfieldHero from '../assets/cornfield_hero.png';
+import cornfieldHero from '../assets/cornfield_bg.png';
 import afalmLogo from '../assets/Afalm_Logo.png';
 
 export default function Register() {
@@ -56,7 +56,7 @@ export default function Register() {
         <p className="auth-subtitle">
           Join a network of professional agricultural operators. Use AI-driven diagnostics to protect your yield and track crop health history with precision.
         </p>
-        
+
         <div className="features-grid">
           <div className="feature-badge">
             <Microscope size={18} color="#0B311E" />
@@ -84,14 +84,14 @@ export default function Register() {
               <label>Full Name</label>
               <div className="input-wrapper">
                 <User size={18} className="input-icon" />
-                <input 
-                  type="text" 
+                <input
+                  type="text"
                   name="fullName"
-                  className="form-control" 
-                  placeholder="Enter your full name" 
+                  className="form-control"
+                  placeholder="Enter your full name"
                   value={formData.fullName}
                   onChange={handleChange}
-                  required 
+                  required
                 />
               </div>
             </div>
@@ -100,14 +100,14 @@ export default function Register() {
               <label>Email Address</label>
               <div className="input-wrapper">
                 <Mail size={18} className="input-icon" />
-                <input 
-                  type="email" 
+                <input
+                  type="email"
                   name="email"
-                  className="form-control" 
-                  placeholder="email@farm-example.com" 
+                  className="form-control"
+                  placeholder="email@farm-example.com"
                   value={formData.email}
                   onChange={handleChange}
-                  required 
+                  required
                 />
               </div>
             </div>
@@ -116,14 +116,14 @@ export default function Register() {
               <label>Phone Number</label>
               <div className="input-wrapper">
                 <Phone size={18} className="input-icon" />
-                <input 
-                  type="tel" 
+                <input
+                  type="tel"
                   name="phoneNumber"
-                  className="form-control" 
-                  placeholder="+1 (555) 000-0000" 
+                  className="form-control"
+                  placeholder="+1 (555) 000-0000"
                   value={formData.phoneNumber}
                   onChange={handleChange}
-                  required 
+                  required
                 />
               </div>
             </div>
@@ -132,23 +132,23 @@ export default function Register() {
               <label>Password</label>
               <div className="input-wrapper">
                 <Lock size={18} className="input-icon" />
-                <input 
-                  type="password" 
+                <input
+                  type="password"
                   name="password"
-                  className="form-control" 
-                  placeholder="********" 
+                  className="form-control"
+                  placeholder="********"
                   value={formData.password}
                   onChange={handleChange}
-                  required 
+                  required
                 />
               </div>
             </div>
 
             <div className="form-select-wrapper">
-              <label style={{display: 'block', fontSize: '0.85rem', fontWeight: '600', marginBottom: '0.4rem'}}>Primary Crop</label>
+              <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: '600', marginBottom: '0.4rem' }}>Primary Crop</label>
               <div className="input-wrapper">
                 <Sprout size={18} className="input-icon" />
-                <select name="mainCrop" value={formData.mainCrop} onChange={handleChange} style={{paddingLeft: '2.8rem'}} required>
+                <select name="mainCrop" value={formData.mainCrop} onChange={handleChange} style={{ paddingLeft: '2.8rem' }} required>
                   <option value="" disabled>Select your primary crop</option>
                   <option value="Corn">Corn</option>
                   <option value="Wheat">Wheat</option>
@@ -173,8 +173,8 @@ export default function Register() {
           </div>
 
           <div className="auth-footer">
-            <a href="#" style={{color: 'inherit', textDecoration: 'none'}}>Terms of Service</a>
-            <a href="#" style={{color: 'inherit', textDecoration: 'none'}}>Privacy Policy</a>
+            <a href="#" style={{ color: 'inherit', textDecoration: 'none' }}>Terms of Service</a>
+            <a href="#" style={{ color: 'inherit', textDecoration: 'none' }}>Privacy Policy</a>
           </div>
         </div>
       </div>

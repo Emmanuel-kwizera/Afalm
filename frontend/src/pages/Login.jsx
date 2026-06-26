@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Mail, Lock, Microscope, History, ArrowRight } from 'lucide-react';
 import { loginUser } from '../services/api';
-import cornfieldHero from '../assets/cornfield_hero.png';
+import cornfieldHero from '../assets/cornfield_bg.png';
 import afalmLogo from '../assets/Afalm_Logo.png';
 
 export default function Login() {
@@ -53,7 +53,7 @@ export default function Login() {
         <p className="auth-subtitle">
           Access your agricultural dashboard to manage your crop health, review diagnostics, and analyze your soil metrics.
         </p>
-        
+
         <div className="features-grid">
           <div className="feature-badge">
             <Microscope size={18} color="#0B311E" />
@@ -81,14 +81,14 @@ export default function Login() {
               <label>Email Address</label>
               <div className="input-wrapper">
                 <Mail size={18} className="input-icon" />
-                <input 
-                  type="email" 
+                <input
+                  type="email"
                   name="email"
-                  className="form-control" 
-                  placeholder="email@farm-example.com" 
+                  className="form-control"
+                  placeholder="email@farm-example.com"
                   value={formData.email}
                   onChange={handleChange}
-                  required 
+                  required
                 />
               </div>
             </div>
@@ -97,14 +97,14 @@ export default function Login() {
               <label>Password</label>
               <div className="input-wrapper">
                 <Lock size={18} className="input-icon" />
-                <input 
-                  type="password" 
+                <input
+                  type="password"
                   name="password"
-                  className="form-control" 
-                  placeholder="********" 
+                  className="form-control"
+                  placeholder="********"
                   value={formData.password}
                   onChange={handleChange}
-                  required 
+                  required
                 />
               </div>
               <div style={{ textAlign: 'right', marginTop: '0.5rem' }}>
@@ -123,8 +123,8 @@ export default function Login() {
           </div>
 
           <div className="auth-footer">
-            <a href="#" style={{color: 'inherit', textDecoration: 'none'}}>Terms of Service</a>
-            <a href="#" style={{color: 'inherit', textDecoration: 'none'}}>Privacy Policy</a>
+            <a href="#" style={{ color: 'inherit', textDecoration: 'none' }}>Terms of Service</a>
+            <a href="#" style={{ color: 'inherit', textDecoration: 'none' }}>Privacy Policy</a>
           </div>
         </div>
       </div>
