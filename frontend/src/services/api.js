@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:3000/api';
+const API_URL = 'https://afalm-backend.onrender.com/api';
 
 const api = axios.create({
   baseURL: API_URL,
@@ -21,7 +21,7 @@ export const resetPassword = async (userData) => {
   return response.data;
 };
 
-const PYTHON_API_URL = 'http://localhost:8000';
+const PYTHON_API_URL = 'https://afalm.onrender.com';
 
 const pythonApi = axios.create({
   baseURL: PYTHON_API_URL,
@@ -33,7 +33,7 @@ export const predictDisease = async (imageFiles) => {
   imageFiles.forEach(file => {
     formData.append('files', file);
   });
-  
+
   const response = await pythonApi.post('/predict-batch', formData, {
     headers: { 'Content-Type': 'multipart/form-data' }
   });
