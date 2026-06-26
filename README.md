@@ -9,7 +9,7 @@
 An AI-powered smart agriculture platform designed to assist farmers, agronomists, and autonomous drone agents in crop disease diagnostics and multi-task soil health prediction. **AFALM** integrates advanced Computer Vision (Deep Learning) with robust predictive modeling (tabular Machine Learning) within a modern, user-friendly full-stack web application to drive sustainable, high-yield agriculture.
 
 - [Figma Design](https://www.figma.com/design/b2satlhwSIA8AKPkESd5tQ/Afalm?node-id=0-1&t=fMkEVXBjUiuHN157-1)
-- [Initial Demo Video](https://youtu.be/A4Ms3E2iEcY)
+- [Final version Demo Video]([https://youtu.be/A4Ms3E2iEcY](https://drive.google.com/file/d/1T-EpHwAHOto_1C178Cgiok6_P-90lKng/view?usp=sharing))
 
 ---
 
