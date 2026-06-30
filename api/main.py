@@ -38,8 +38,8 @@ TRAIN_DATA_DIR = os.path.join(os.path.dirname(__file__), '..', 'data', 'train')
 
 
 # Model paths
-MODEL_PATH = os.path.join(os.path.dirname(__file__), '..', 'models', 'final', 'plant_disease_model.keras')
-RETRAINED_MODEL_PATH = MODEL_PATH.replace('.keras', '_retrained_latest.keras')
+MODEL_PATH = os.path.join(os.path.dirname(__file__), '..', 'models', 'final', 'plant_disease_model.tflite')
+RETRAINED_MODEL_PATH = MODEL_PATH.replace('.tflite', '_retrained_latest.tflite')
 CLASS_NAMES_PATH = os.path.join(os.path.dirname(__file__), '..', 'models', 'class_names.json')
 
 # Global variables for model and class names (will be reloaded after retraining)
@@ -54,10 +54,12 @@ def load_model_and_classes():
     try:
         # Prefer retrained model if it exists, otherwise use original
         if os.path.exists(RETRAINED_MODEL_PATH):
-            model = tf.keras.models.load_model(RETRAINED_MODEL_PATH)
+            model = tf.lite.Interpreter(model_path=RETRAINED_MODEL_PATH)
+            model.allocate_tensors()
             print(f" Loaded RETRAINED model from {RETRAINED_MODEL_PATH}")
         elif os.path.exists(MODEL_PATH):
-            model = tf.keras.models.load_model(MODEL_PATH)
+            model = tf.lite.Interpreter(model_path=MODEL_PATH)
+            model.allocate_tensors()
             print(f" Loaded ORIGINAL model from {MODEL_PATH}")
         else:
             print(f" Model not found at {MODEL_PATH}. Please run training notebook first.")
@@ -107,6 +109,14 @@ REQUEST_COUNT = 0
 SOIL_REQUEST_COUNT = 0
 PREDICTION_TIMES = []
 
+def make_tflite_prediction(interpreter, img_array):
+    input_details = interpreter.get_input_details()
+    output_details = interpreter.get_output_details()
+    img_array = img_array.astype(input_details[0]['dtype'])
+    interpreter.set_tensor(input_details[0]['index'], img_array)
+    interpreter.invoke()
+    return interpreter.get_tensor(output_details[0]['index'])
+
 def preprocess_image(image: Image.Image, target_size=(224, 224)):
     """Preprocess image for model prediction"""
     # Convert to RGB if needed
@@ -154,7 +164,7 @@ async def predict(file: UploadFile = File(...)):
         
         # Predict with timing
         start_time = time.time()
-        predictions = model.predict(img_array, verbose=0)
+        predictions = make_tflite_prediction(model, img_array)
         inference_time = (time.time() - start_time) * 1000  # ms
         
         # Get top prediction
@@ -206,7 +216,7 @@ async def predict_batch(files: List[UploadFile] = File(...)):
             img_array = preprocess_image(image)
             
             start_time = time.time()
-            predictions = model.predict(img_array, verbose=0)
+            predictions = make_tflite_prediction(model, img_array)
             inference_time = (time.time() - start_time) * 1000
             
             pred_idx = int(np.argmax(predictions[0]))
