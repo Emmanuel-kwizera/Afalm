@@ -2,7 +2,7 @@ import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import afalmLogo from '../assets/Afalm_Logo.png';
 
-export default function Sidebar() {
+export default function Sidebar({ isOpen, closeMenu }) {
   const navigate = useNavigate();
   
   // Try to get user from local storage
@@ -16,7 +16,7 @@ export default function Sidebar() {
   };
 
   return (
-    <div className="sidebar">
+    <div className={`sidebar ${isOpen ? 'open' : ''}`}>
       <img src={afalmLogo} alt="AFALM Logo" className="sidebar-brand-logo" />
       
       <div className="sidebar-profile">
@@ -30,29 +30,29 @@ export default function Sidebar() {
       </div>
 
       <nav className="sidebar-nav">
-        <NavLink to="/dashboard" className={({isActive}) => isActive ? "nav-item active" : "nav-item"}>
+        <NavLink to="/dashboard" onClick={closeMenu} className={({isActive}) => isActive ? "nav-item active" : "nav-item"}>
           Dashboard
         </NavLink>
-        <NavLink to="/soil-health" className={({isActive}) => isActive ? "nav-item active" : "nav-item"}>
+        <NavLink to="/soil-health" onClick={closeMenu} className={({isActive}) => isActive ? "nav-item active" : "nav-item"}>
           Soil Health
         </NavLink>
-        <NavLink to="/ai-diagnostics" className={({isActive}) => isActive ? "nav-item active" : "nav-item"}>
+        <NavLink to="/ai-diagnostics" onClick={closeMenu} className={({isActive}) => isActive ? "nav-item active" : "nav-item"}>
           AI Diagnostics
         </NavLink>
-        <NavLink to="/history" className={({isActive}) => isActive ? "nav-item active" : "nav-item"}>
+        <NavLink to="/history" onClick={closeMenu} className={({isActive}) => isActive ? "nav-item active" : "nav-item"}>
           History
         </NavLink>
-        <NavLink to="/alerts" className={({isActive}) => isActive ? "nav-item active" : "nav-item"}>
+        <NavLink to="/alerts" onClick={closeMenu} className={({isActive}) => isActive ? "nav-item active" : "nav-item"}>
           Alerts
         </NavLink>
-        <NavLink to="/field-map" className={({isActive}) => isActive ? "nav-item active" : "nav-item"}>
+        <NavLink to="/field-map" onClick={closeMenu} className={({isActive}) => isActive ? "nav-item active" : "nav-item"}>
           Field Map
         </NavLink>
-        <NavLink to="/settings" className={({isActive}) => isActive ? "nav-item active" : "nav-item"}>
+        <NavLink to="/settings" onClick={closeMenu} className={({isActive}) => isActive ? "nav-item active" : "nav-item"}>
           Settings
         </NavLink>
         {user.role === 'admin' && (
-          <NavLink to="/admin-dashboard" className={({isActive}) => isActive ? "nav-item active" : "nav-item"} style={{ marginTop: '1rem', borderTop: '1px solid #D3E0D8', paddingTop: '1rem' }}>
+          <NavLink to="/admin-dashboard" onClick={closeMenu} className={({isActive}) => isActive ? "nav-item active" : "nav-item"} style={{ marginTop: '1rem', borderTop: '1px solid #D3E0D8', paddingTop: '1rem' }}>
             Admin Panel
           </NavLink>
         )}
