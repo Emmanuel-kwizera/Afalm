@@ -863,7 +863,7 @@ body {
 @media (max-width: 768px) {
   /* Layout & Sidebar */
   .layout-container {
-    flex-direction: column;
+    flex-direction: row; /* Keep row so main-content fills height safely */
   }
 
   .sidebar {
@@ -900,6 +900,8 @@ body {
   /* Main Content Area */
   .main-content {
     width: 100vw;
+    height: 100vh;
+    min-height: 0;
   }
   
   .page-content {
