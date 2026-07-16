@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // const API_URL = 'https://afalm-backend.onrender.com/api';
-const API_URL = 'https://afalm-node-api.onrender.com'
+const API_URL = 'https://afalm-node-api.onrender.com/api'
 
 const api = axios.create({
   baseURL: API_URL,

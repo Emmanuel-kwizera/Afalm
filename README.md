@@ -20,7 +20,7 @@ An AI-powered smart agriculture platform designed to assist farmers, agronomists
 <!-- - **Machine Learning API:** [https://afalm.onrender.com](https://afalm.onrender.com/docs) -->
 - **Machine Learning API:** [https://afalm.onrender.com](https://afalm-prediction.onrender.comdocs)
 <!-- - **Node.js API:** [https://afalm-backend.onrender.com](https://afalm-backend.onrender.com/api-docs) -->
-- **Node.js API:** [https://afalm-backend.onrender.com](https://afalm-node-api.onrender.com)
+- **Node.js API:** [https://afalm-backend.onrender.com](https://afalm-node-api.onrender.com/api-docs)
 
 ---
 
