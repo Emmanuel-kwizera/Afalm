@@ -2,7 +2,8 @@
 // Dynamically determine API URL based on where the frontend is served
 const API_BASE_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:' || !window.location.hostname)
     ? 'http://localhost:8000'
-    : 'https://afalm.onrender.com';
+    // : 'https://afalm.onrender.com';
+    : 'https://afalm-prediction.onrender.com'
 
 // DOM Elements
 const fileInput = document.getElementById('file-input');
@@ -107,7 +108,7 @@ function setupEventListeners() {
             if (tab.dataset.tab === 'dashboard') {
                 loadDashboard();
             }
-            
+
             updateMetricsDisplay(tab.dataset.tab);
         });
     });
@@ -115,10 +116,10 @@ function setupEventListeners() {
 
 function updateMetricsDisplay(activeTab) {
     if (!totalRequestsEl) return;
-    
+
     // Fallback if index.html is cached and requestsLabelEl is null
     const labelEl = requestsLabelEl || totalRequestsEl.previousElementSibling;
-    
+
     if (activeTab === 'soil') {
         if (labelEl) labelEl.textContent = 'Soil Predictions';
         totalRequestsEl.textContent = soilRequestsCount.toLocaleString();
@@ -248,7 +249,7 @@ async function updateMonitoring() {
         uptimeEl.textContent = data.uptime_human;
         avgInferenceEl.textContent = `${data.inference_metrics.average_ms.toFixed(1)}ms`;
         cpuUsageEl.textContent = `${data.system.cpu_percent.toFixed(1)}%`;
-        
+
         // Update display based on current active tab
         const activeTabEl = document.querySelector('.nav-tab.active');
         const activeTab = activeTabEl ? activeTabEl.dataset.tab : 'prediction';
@@ -419,7 +420,7 @@ async function handleSoilAnalysis(e) {
                 resNpk.textContent = '--';
             }
             resSalinity.textContent = data.data.salinity_stress || '--';
-            
+
             soilResults.classList.remove('hidden');
         } else {
             soilStatus.classList.remove('hidden');

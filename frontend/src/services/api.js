@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const API_URL = 'https://afalm-backend.onrender.com/api';
+// const API_URL = 'https://afalm-backend.onrender.com/api';
+const API_URL = 'https://afalm-node-api.onrender.com'
 
 const api = axios.create({
   baseURL: API_URL,
@@ -21,7 +22,8 @@ export const resetPassword = async (userData) => {
   return response.data;
 };
 
-const PYTHON_API_URL = 'https://afalm.onrender.com';
+// const PYTHON_API_URL = 'https://afalm.onrender.com';
+const PYTHON_API_URL = 'https://afalm-prediction.onrender.com'
 
 const pythonApi = axios.create({
   baseURL: PYTHON_API_URL,
