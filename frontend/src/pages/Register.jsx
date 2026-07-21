@@ -162,6 +162,13 @@ export default function Register() {
               </p>
             </div>
 
+            <div className="form-group" style={{ display: 'flex', alignItems: 'center', marginTop: '1rem', marginBottom: '1.5rem' }}>
+              <input type="checkbox" id="privacy-agree" required style={{ marginRight: '0.8rem', width: '1.2rem', height: '1.2rem', cursor: 'pointer' }} />
+              <label htmlFor="privacy-agree" style={{ fontSize: '0.9rem', color: '#666', cursor: 'pointer', margin: 0 }}>
+                I agree to the <Link to="/privacy-policy" target="_blank" style={{ color: '#0B311E', fontWeight: 'bold' }}>Privacy Policy</Link>
+              </label>
+            </div>
+
             <button type="submit" className="btn-primary" disabled={isLoading}>
               {isLoading ? 'Creating Account...' : 'Create Account'}
               <ArrowRight size={18} />
@@ -174,7 +181,7 @@ export default function Register() {
 
           <div className="auth-footer">
             <a href="#" style={{ color: 'inherit', textDecoration: 'none' }}>Terms of Service</a>
-            <a href="#" style={{ color: 'inherit', textDecoration: 'none' }}>Privacy Policy</a>
+            <Link to="/privacy-policy" style={{ color: 'inherit', textDecoration: 'none' }}>Privacy Policy</Link>
           </div>
         </div>
       </div>

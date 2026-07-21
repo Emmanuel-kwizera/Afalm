@@ -11,6 +11,7 @@ import PredictionHistory from './pages/PredictionHistory';
 import Settings from './pages/Settings';
 import AdminDashboard from './pages/AdminDashboard';
 import Sidebar from './components/Sidebar';
+import PrivacyPolicy from './pages/PrivacyPolicy';
 
 // Admin protection wrapper
 const AdminRoute = ({ children }) => {
@@ -43,6 +44,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         
         {/* Protected Dashboard Routes */}
         <Route path="/" element={<Layout />}>
