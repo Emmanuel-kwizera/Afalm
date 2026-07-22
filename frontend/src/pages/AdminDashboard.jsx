@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Users, Microscope, Sprout, TrendingUp, ShieldAlert } from 'lucide-react';
+import { Users, Microscope, Sprout, TrendingUp, ShieldAlert, Cpu, Network } from 'lucide-react';
 import { getAdminStats } from '../services/api';
 
 export default function AdminDashboard() {
@@ -168,6 +168,50 @@ export default function AdminDashboard() {
                 </div>
               ))
             )}
+          </div>
+        </div>
+      </div>
+
+      <div className="section-header" style={{ marginTop: '2rem' }}>
+        <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          <Cpu size={24} color="#356C51" />
+          Sensor Design & Architecture
+        </h3>
+      </div>
+      <div className="monitoring-grid" style={{ gridTemplateColumns: '1fr 1fr', gap: '2rem', marginBottom: '3rem' }}>
+        <div className="monitor-card" style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          <h4 style={{ margin: 0, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <Network size={20} color="#356C51" />
+            Sensor Node Offline Buffer
+          </h4>
+          <p style={{ fontSize: '0.9rem', color: '#666', margin: 0 }}>
+            Architecture detailing the offline buffering and syncing mechanism of AFALM sensor nodes.
+          </p>
+          <div style={{ marginTop: 'auto', backgroundColor: '#f9f9f9', borderRadius: '8px', overflow: 'hidden', border: '1px solid #eee' }}>
+            <img 
+              src="/assets/afalm_sensor_node_offline_buffer_architecture.png" 
+              alt="Sensor Node Offline Buffer Architecture" 
+              style={{ width: '100%', height: 'auto', display: 'block', cursor: 'pointer' }}
+              onClick={() => window.open('/assets/afalm_sensor_node_offline_buffer_architecture.png', '_blank')}
+            />
+          </div>
+        </div>
+
+        <div className="monitor-card" style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          <h4 style={{ margin: 0, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <Network size={20} color="#356C51" />
+            Dual-Mode Upload Logic
+          </h4>
+          <p style={{ fontSize: '0.9rem', color: '#666', margin: 0 }}>
+            Flowchart of the dual-mode data upload logic handling both online and offline states.
+          </p>
+          <div style={{ marginTop: 'auto', backgroundColor: '#f9f9f9', borderRadius: '8px', overflow: 'hidden', border: '1px solid #eee' }}>
+            <img 
+              src="/assets/afalm_dual_mode_upload_logic.png" 
+              alt="Dual-Mode Upload Logic Flowchart" 
+              style={{ width: '100%', height: 'auto', display: 'block', cursor: 'pointer' }}
+              onClick={() => window.open('/assets/afalm_dual_mode_upload_logic.png', '_blank')}
+            />
           </div>
         </div>
       </div>
