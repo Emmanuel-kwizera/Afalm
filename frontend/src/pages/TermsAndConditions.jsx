@@ -19,22 +19,28 @@ export default function TermsAndConditions() {
 
         <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
           <FileText size={48} color="#0B311E" style={{ marginBottom: '1rem' }} />
-          <h1 style={{ color: '#0B311E', fontSize: '2rem', marginBottom: '0.5rem' }}>Terms and Conditions</h1>
+          <h1 style={{ color: '#0B311E', fontSize: '2rem', marginBottom: '0.5rem' }}>Terms of Service</h1>
           <p style={{ color: '#666' }}>Last updated: {new Date().toLocaleDateString()}</p>
         </div>
 
         <div style={{ color: '#333', lineHeight: '1.6' }}>
-          <h2 style={{ color: '#0B311E', marginTop: '1.5rem', marginBottom: '0.5rem', fontSize: '1.3rem' }}>1. Introduction</h2>
-          <p>Welcome to the AFALM platform. By accessing or using our services, you agree to be bound by these Terms and Conditions.</p>
+          <h2 style={{ color: '#0B311E', marginTop: '1.5rem', marginBottom: '0.5rem', fontSize: '1.3rem' }}>1. Acceptance of Terms</h2>
+          <p>By accessing, registering for, or using the AFALM platform ("the Service"), you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use the Service.</p>
 
-          <h2 style={{ color: '#0B311E', marginTop: '1.5rem', marginBottom: '0.5rem', fontSize: '1.3rem' }}>2. Nature of Guidance</h2>
-          <p>Because of this, AfAlm was designed to attach a confidence score to every alert, and farmers were told clearly, from the start, that the system gives supplementary guidance, not a replacement for their own judgement.</p>
+          <h2 style={{ color: '#0B311E', marginTop: '1.5rem', marginBottom: '0.5rem', fontSize: '1.3rem' }}>2. Nature of AI Guidance & Disclaimer</h2>
+          <p>AFALM provides advanced AI-driven crop disease diagnostics and soil health predictions. <strong>These insights serve as powerful supplementary tools designed to enhance your agricultural decision-making alongside your standard farming maintenance and practices.</strong> Every diagnostic alert includes a confidence score, which serves as a highly calibrated measure of the model's certainty regarding the identified condition. While our AI models are trained on extensive datasets to deliver robust and reliable insights, agricultural environments remain naturally complex, and you assume responsibility for any final farming decisions executed based on the Service.</p>
 
-          <h2 style={{ color: '#0B311E', marginTop: '1.5rem', marginBottom: '0.5rem', fontSize: '1.3rem' }}>3. User Responsibilities</h2>
-          <p>Users are responsible for maintaining the confidentiality of their account credentials and for all activities that occur under their account.</p>
+          <h2 style={{ color: '#0B311E', marginTop: '1.5rem', marginBottom: '0.5rem', fontSize: '1.3rem' }}>3. User Accounts and Security</h2>
+          <p>To use certain features of the Service, you must register for an account. You agree to provide accurate, current, and complete information during the registration process. You are solely responsible for safeguarding your password and for all activities that occur under your account.</p>
 
-          <h2 style={{ color: '#0B311E', marginTop: '1.5rem', marginBottom: '0.5rem', fontSize: '1.3rem' }}>4. Changes to Terms</h2>
-          <p>We reserve the right to modify these terms at any time. Your continued use of the platform constitutes your acceptance of the updated terms.</p>
+          <h2 style={{ color: '#0B311E', marginTop: '1.5rem', marginBottom: '0.5rem', fontSize: '1.3rem' }}>4. Acceptable Use</h2>
+          <p>You agree not to misuse the Service. This includes, but is not limited to: uploading malicious software, attempting to breach the system's security, reverse-engineering the AI models, or using the platform for illegal activities.</p>
+
+          <h2 style={{ color: '#0B311E', marginTop: '1.5rem', marginBottom: '0.5rem', fontSize: '1.3rem' }}>5. Limitation of Liability</h2>
+          <p>To the maximum extent permitted by law, AFALM and its developers shall not be liable for any indirect, incidental, special, consequential, or punitive damages, including without limitation, loss of crops, yield reduction, loss of profits, or data loss, resulting from your use of or inability to use the Service.</p>
+
+          <h2 style={{ color: '#0B311E', marginTop: '1.5rem', marginBottom: '0.5rem', fontSize: '1.3rem' }}>6. Modifications to the Service</h2>
+          <p>We reserve the right to modify, suspend, or discontinue the Service (or any part thereof) at any time, with or without notice. We may also revise these Terms from time to time; your continued use of the platform constitutes acceptance of those changes.</p>
         </div>
       </div>
     </div>
