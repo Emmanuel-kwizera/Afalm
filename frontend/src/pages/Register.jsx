@@ -180,7 +180,7 @@ export default function Register() {
           </div>
 
           <div className="auth-footer">
-            <a href="#" style={{ color: 'inherit', textDecoration: 'none' }}>Terms of Service</a>
+            <Link to="/terms" style={{ color: 'inherit', textDecoration: 'none' }}>Terms of Service</Link>
             <Link to="/privacy-policy" style={{ color: 'inherit', textDecoration: 'none' }}>Privacy Policy</Link>
           </div>
         </div>

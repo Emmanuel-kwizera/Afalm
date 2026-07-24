@@ -12,6 +12,7 @@ import Settings from './pages/Settings';
 import AdminDashboard from './pages/AdminDashboard';
 import Sidebar from './components/Sidebar';
 import PrivacyPolicy from './pages/PrivacyPolicy';
+import TermsAndConditions from './pages/TermsAndConditions';
 
 // Admin protection wrapper
 const AdminRoute = ({ children }) => {
@@ -45,6 +46,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="/terms" element={<TermsAndConditions />} />
         
         {/* Protected Dashboard Routes */}
         <Route path="/" element={<Layout />}>
