@@ -4,8 +4,8 @@ import { getAdminStats, predictSoilMetrics } from '../services/api';
 
 const SensorSimulator = () => {
   const [sensors, setSensors] = useState({
-    1: { running: false, lastData: null, result: null },
-    2: { running: false, lastData: null, result: null }
+    1: { running: false, isOnline: true, buffer: [], lastData: null, result: null },
+    2: { running: false, isOnline: true, buffer: [], lastData: null, result: null }
   });
 
   const toggleSensor = (id) => {
@@ -13,6 +13,17 @@ const SensorSimulator = () => {
       ...prev,
       [id]: { ...prev[id], running: !prev[id].running }
     }));
+  };
+
+  const toggleOnline = (id) => {
+    setSensors(prev => {
+      const sensor = prev[id];
+      if (!sensor.isOnline) {
+        // Syncing: Clear the buffer when coming back online
+        return { ...prev, [id]: { ...sensor, isOnline: true, buffer: [] } };
+      }
+      return { ...prev, [id]: { ...sensor, isOnline: false } };
+    });
   };
 
   useEffect(() => {
@@ -36,19 +47,25 @@ const SensorSimulator = () => {
 
           setSensors(prev => ({
             ...prev,
-            [id]: { ...prev[id], lastData: payload }
+            [id]: {
+              ...prev[id],
+              lastData: payload,
+              buffer: !prev[id].isOnline ? [...prev[id].buffer, payload] : prev[id].buffer
+            }
           }));
 
-          try {
-            const res = await predictSoilMetrics(payload);
-            if (res.success) {
-              setSensors(prev => ({
-                ...prev,
-                [id]: { ...prev[id], result: res.data }
-              }));
+          if (sensors[id].isOnline) {
+            try {
+              const res = await predictSoilMetrics(payload);
+              if (res.success) {
+                setSensors(prev => ({
+                  ...prev,
+                  [id]: { ...prev[id], result: res.data }
+                }));
+              }
+            } catch (e) {
+              console.error('Simulation error:', e);
             }
-          } catch (e) {
-            console.error('Simulation error:', e);
           }
         };
 
@@ -60,7 +77,7 @@ const SensorSimulator = () => {
     return () => {
       Object.values(intervals).forEach(clearInterval);
     };
-  }, [sensors[1].running, sensors[2].running]);
+  }, [sensors[1].running, sensors[2].running, sensors[1].isOnline, sensors[2].isOnline]);
 
   return (
     <div style={{ marginTop: '1rem' }}>
@@ -70,8 +87,8 @@ const SensorSimulator = () => {
           Live Sensor Simulation
         </h3>
         <p style={{ color: '#666', marginTop: '0.5rem' }}>
-          Simulating live data feeds from remote soil sensors directly to the prediction ML model. 
-          Data generated here is <b>not saved</b> to the database.
+          Simulating live data feeds from remote soil sensors directly to the prediction ML model.
+          Data generated here is <b>not saved</b> to the database. Toggle a sensor offline to simulate data buffering.
         </p>
       </div>
 
@@ -80,19 +97,41 @@ const SensorSimulator = () => {
           <div key={id} className="monitor-card" style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem', borderTop: sensors[id].running ? '4px solid #356C51' : '4px solid #ccc' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <h4 style={{ margin: 0, fontSize: '1.2rem' }}>Sensor Node {id}</h4>
-              <button 
-                onClick={() => toggleSensor(id)}
-                style={{
-                  display: 'flex', alignItems: 'center', gap: '0.5rem',
-                  padding: '0.5rem 1rem', borderRadius: '8px', cursor: 'pointer', border: 'none',
-                  backgroundColor: sensors[id].running ? '#fee2e2' : '#dcfce7',
-                  color: sensors[id].running ? '#dc2626' : '#166534',
-                  fontWeight: 'bold'
-                }}
-              >
-                {sensors[id].running ? <><Square size={16} /> Stop</> : <><Play size={16} /> Start</>}
-              </button>
+              <div style={{ display: 'flex', gap: '0.5rem' }}>
+                <button
+                  onClick={() => toggleOnline(id)}
+                  style={{
+                    padding: '0.5rem 0.8rem', borderRadius: '8px', cursor: 'pointer', border: '1px solid #ddd',
+                    backgroundColor: sensors[id].isOnline ? '#fff' : '#f3f4f6',
+                    color: sensors[id].isOnline ? '#000' : '#4b5563',
+                    fontSize: '0.9rem'
+                  }}
+                >
+                  {sensors[id].isOnline ? 'Online' : 'Offline'}
+                </button>
+                <button
+                  onClick={() => toggleSensor(id)}
+                  style={{
+                    display: 'flex', alignItems: 'center', gap: '0.5rem',
+                    padding: '0.5rem 1rem', borderRadius: '8px', cursor: 'pointer', border: 'none',
+                    backgroundColor: sensors[id].running ? '#fee2e2' : '#dcfce7',
+                    color: sensors[id].running ? '#dc2626' : '#166534',
+                    fontWeight: 'bold'
+                  }}
+                >
+                  {sensors[id].running ? <><Square size={16} /> Stop</> : <><Play size={16} /> Start</>}
+                </button>
+              </div>
             </div>
+
+            {!sensors[id].isOnline && (
+              <div style={{ backgroundColor: '#fff7ed', padding: '1rem', borderRadius: '8px', border: '1px solid #fdba74' }}>
+                <div style={{ fontWeight: 'bold', color: '#c2410c' }}> Connection Lost</div>
+                <div style={{ fontSize: '1.2rem', fontWeight: 'bold', color: '#ea580c', marginTop: '0.3rem' }}>
+                  {sensors[id].buffer.length} <span style={{ fontSize: '0.9rem', fontWeight: 'normal' }}>packets buffered locally</span>
+                </div>
+              </div>
+            )}
 
             {sensors[id].lastData ? (
               <div style={{ backgroundColor: '#f9fafb', padding: '1rem', borderRadius: '8px', fontSize: '0.9rem' }}>
@@ -194,14 +233,14 @@ export default function AdminDashboard() {
       </div>
 
       <div className="admin-tabs" style={{ display: 'flex', gap: '1rem', marginBottom: '2rem', borderBottom: '1px solid #ddd', paddingBottom: '0.5rem' }}>
-        <button 
-          onClick={() => setActiveTab('overview')} 
+        <button
+          onClick={() => setActiveTab('overview')}
           style={{ background: 'none', border: 'none', padding: '0.5rem 1rem', fontSize: '1.1rem', cursor: 'pointer', borderBottom: activeTab === 'overview' ? '3px solid #356C51' : 'none', color: activeTab === 'overview' ? '#356C51' : '#666', fontWeight: activeTab === 'overview' ? 'bold' : 'normal' }}
         >
           Overview
         </button>
-        <button 
-          onClick={() => setActiveTab('simulator')} 
+        <button
+          onClick={() => setActiveTab('simulator')}
           style={{ background: 'none', border: 'none', padding: '0.5rem 1rem', fontSize: '1.1rem', cursor: 'pointer', borderBottom: activeTab === 'simulator' ? '3px solid #356C51' : 'none', color: activeTab === 'simulator' ? '#356C51' : '#666', fontWeight: activeTab === 'simulator' ? 'bold' : 'normal' }}
         >
           Sensor Simulator
@@ -296,10 +335,10 @@ export default function AdminDashboard() {
                   stats.recentDiseaseScans.map(item => (
                     <div key={item._id} className="history-card" style={{ marginBottom: '1rem', padding: '1rem', display: 'flex', gap: '1rem', backgroundColor: '#fff', borderRadius: '12px', boxShadow: '0 2px 10px rgba(0,0,0,0.05)', alignItems: 'center' }}>
                       {item.imageUrl ? (
-                        <img 
-                          src={item.imageUrl} 
-                          alt="Scanned leaf" 
-                          style={{ width: '50px', height: '50px', objectFit: 'cover', borderRadius: '8px' }} 
+                        <img
+                          src={item.imageUrl}
+                          alt="Scanned leaf"
+                          style={{ width: '50px', height: '50px', objectFit: 'cover', borderRadius: '8px' }}
                         />
                       ) : (
                         <div style={{ width: '50px', height: '50px', backgroundColor: '#EBF4EE', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#356C51' }}>
@@ -337,9 +376,9 @@ export default function AdminDashboard() {
                 Architecture detailing the offline buffering and syncing mechanism of AFALM sensor nodes.
               </p>
               <div style={{ marginTop: 'auto', backgroundColor: '#f9f9f9', borderRadius: '8px', overflow: 'hidden', border: '1px solid #eee' }}>
-                <img 
-                  src="/assets/afalm_sensor_node_offline_buffer_architecture.png" 
-                  alt="Sensor Node Offline Buffer Architecture" 
+                <img
+                  src="/assets/afalm_sensor_node_offline_buffer_architecture.png"
+                  alt="Sensor Node Offline Buffer Architecture"
                   style={{ width: '100%', height: 'auto', display: 'block', cursor: 'pointer' }}
                   onClick={() => window.open('/assets/afalm_sensor_node_offline_buffer_architecture.png', '_blank')}
                 />
@@ -355,9 +394,9 @@ export default function AdminDashboard() {
                 Flowchart of the dual-mode data upload logic handling both online and offline states.
               </p>
               <div style={{ marginTop: 'auto', backgroundColor: '#f9f9f9', borderRadius: '8px', overflow: 'hidden', border: '1px solid #eee' }}>
-                <img 
-                  src="/assets/afalm_dual_mode_upload_logic.png" 
-                  alt="Dual-Mode Upload Logic Flowchart" 
+                <img
+                  src="/assets/afalm_dual_mode_upload_logic.png"
+                  alt="Dual-Mode Upload Logic Flowchart"
                   style={{ width: '100%', height: 'auto', display: 'block', cursor: 'pointer' }}
                   onClick={() => window.open('/assets/afalm_dual_mode_upload_logic.png', '_blank')}
                 />
