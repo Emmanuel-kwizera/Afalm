@@ -47,5 +47,3 @@ This document outlines the testing procedures, metrics, and visual results for t
 - **Expected Outcome**: Display total disease scans, total soil analyses, ML model uptime, and a feed of recent global predictions.
 - **Result**: **PASS**. The dashboard correctly aggregated 9 total disease scans and 5 soil analyses, proving the backend successfully queried the separate MongoDB collections. The UI also correctly rendered the historical prediction cards.
 
-*(Screenshot: Admin Analytics Dashboard)*
-![Admin Dashboard](./assets/admin_dashboard.png)
