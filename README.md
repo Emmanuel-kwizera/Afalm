@@ -43,6 +43,12 @@ The application features a fully authenticated user dashboard where farmers can 
 
 ---
 
+## Testing & Validation
+
+To review the results of our Machine Learning models, IoT sensor fault-tolerance buffering, and system security tests (with UI screenshots), please see our comprehensive [System Testing Results Document](./testing_result.md).
+
+---
+
 ## System Architecture & Stack
 
 The AFALM platform is built using a modern microservice-inspired architecture:
